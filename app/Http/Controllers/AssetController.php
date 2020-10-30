@@ -6,32 +6,41 @@ use Illuminate\Http\Request;
 use App\Models\Asset;
 use App\Models\AssetCategory;
 use App\Models\AssetType;
-use App\Models\Supplier;
+use App\Models\AssetUnit;
+use App\Models\BudgetType;
 use App\Models\PurchasedMethod;
+use App\Models\DocumentType;
+use App\Models\Supplier;
+use App\Models\Department;
 
 
 class AssetController extends Controller
-{
+{   
+    protected $status = [
+        '1' => 'รอเบิก',
+        '2' => 'ใช้งานอยู่',
+        '3' => 'ถูกยืม',
+        '4' => 'จำหน่าย',
+    ];
+
     public function list()
     {
-        $status = [
-            '1' => 'รอเบิก',
-            '2' => 'ใช้งานอยู่',
-            '3' => 'ถูกยืม',
-            '4' => 'จำหน่าย',
-        ];
-
     	return view('assets.list', [
             "suppliers" => Supplier::all(),
             "cates"     => AssetCategory::all(),
             "types"     => AssetType::all(),
-            "statuses"    => $status
+            "statuses"    => $this->status
     	]);
     }
 
     public function search($cate, $type, $status, $searchKey)
     {
-        if($searchKey == '0') {
+        $conditions = [];
+        if($type != 0) array_push($conditions, ['asset_type', '=', $type]);
+        if($status != 0) array_push($conditions, ['status', '=', $status]);
+        if($searchKey != 0) array_push($conditions, ['asset_name', 'like', '%'.$searchKey.'%']);
+
+        if($conditions == '0') {
             $assets = Asset::with('assetType')
                         ->with('supplier')
                         ->with('budgetType')
@@ -39,7 +48,7 @@ class AssetController extends Controller
                         ->with('purchasedMethod')
                         ->paginate(20);
         } else {
-            $assets = Asset::where('asset_name', 'like', '%'.$searchKey.'%')
+            $assets = Asset::where($conditions)
                         ->with('assetType')
                         ->with('supplier')
                         ->with('budgetType')
@@ -67,46 +76,48 @@ class AssetController extends Controller
         return $lastId;
     }
 
-    public function add($creditor)
+    public function add()
     {
     	return view('assets.add', [
-    		"creditor" => Creditor::where('supplier_id', '=', $creditor)->first(),
-            "debttypes" => DebtType::all(),
+            "cates"     => AssetCategory::all(),
+            "types"     => AssetType::all(),
+            "units"     => AssetUnit::all(),
+            "budgets"   => BudgetType::all(),
+            "docs"   => DocumentType::all(),
+            "methods"     => PurchasedMethod::all(),
+            "suppliers" => Supplier::all(),
+            "departs" => Department::all(),
+            "statuses"  => $this->status
     	]);
     }
 
     public function store(Request $req)
     {
-        /** 0=รอดำเนินการ,1=ขออนุมัติ,2=ตัดจ่าย,3=ยกเลิก,4=ลดหนี้ศุนย์ */
-        $debt = new Debt();
-        $debt->debt_id = $this->generateAutoId();
-        $debt->debt_date = $req['debt_date'];
-        $debt->debt_doc_recno = $req['debt_doc_recno'];
-        $debt->debt_doc_recdate = $req['debt_doc_recdate'];
-        $debt->deliver_no = $req['deliver_no'];
-        $debt->deliver_date = $req['deliver_date'];
-        $debt->debt_doc_no = $req['debt_doc_no'];
-        $debt->debt_doc_date = $req['debt_doc_date'];
-        $debt->debt_type_id = $req['debt_type_id'];
-        $debt->debt_type_detail = $req['debt_type_detail'];
-        $debt->debt_month = $req['debt_month'];
-        $debt->debt_year = $req['debt_year'];
-        $debt->supplier_id = $req['supplier_id'];
-        $debt->supplier_name = $req['supplier_name'];
-        $debt->doc_receive = $req['doc_receive'];
-        $debt->debt_amount = $req['debt_amount'];
-        $debt->debt_vatrate = $req['debt_vatrate'];
-        $debt->debt_vat = $req['debt_vat'];
-        $debt->debt_total = $req['debt_total'];
-        $debt->debt_remark = $req['debt_remark'];
-        
-        $debt->debt_creby = $req['debt_creby'];
-        $debt->debt_credate = date("Y-m-d H:i:s");
-        $debt->debt_userid = $req['debt_userid'];
-        $debt->debt_chgdate = date("Y-m-d H:i:s");
-        $debt->debt_status = '0';
+        $asset = new Asset();
+        // $asset->asset_id = $this->generateAutoId();
+        $asset->asset_no = $req['asset_no'];
+        $asset->asset_name = $req['asset_name'];
+        $asset->description = $req['description'];
+        $asset->asset_type = $req['asset_type'];
+        $asset->amount = $req['amount'];
+        $asset->unit = $req['unit'];
+        $asset->unit_price = $req['unit_price'];
+        $asset->purchased_method = $req['method'];
+        $asset->reg_no = $req['reg_no'];
+        $asset->budget_type = $req['budget_type'];
+        $asset->year = $req['year'];
+        $asset->supplier = $req['supplier'];
+        $asset->doc_type = $req['doc_type'];
+        $asset->doc_no = $req['doc_no'];
+        $asset->doc_date = $req['doc_date'];
+        $asset->date_in = $req['date_in'];
+        $asset->remark = $req['remark'];
+        $asset->status = '1';
 
-        if($debt->save()) {
+        /** Upload image */
+        $asset->image = '';
+
+        if($asset->save()) {
             return [
                 "status" => "success",
                 "message" => "Insert success.",
@@ -137,33 +148,30 @@ class AssetController extends Controller
 
     public function update(Request $req)
     {
-        /** 0=รอดำเนินการ,1=ขออนุมัติ,2=ตัดจ่าย,3=ยกเลิก,4=ลดหนี้ศุนย์ */
-        $debt = Debt::find($req['debt_id']);
-        $debt->debt_date = $req['debt_date'];
-        $debt->debt_doc_recno = $req['debt_doc_recno'];
-        $debt->debt_doc_recdate = $req['debt_doc_recdate'];        
-        $debt->deliver_no = $req['deliver_no'];
-        $debt->deliver_date = $req['deliver_date'];
-        $debt->debt_doc_no = $req['debt_doc_no'];
-        $debt->debt_doc_date = $req['debt_doc_date'];
-        $debt->debt_type_id = $req['debt_type_id'];
-        $debt->debt_type_detail = $req['debt_type_detail'];
-        $debt->supplier_id = $req['supplier_id'];
-        $debt->supplier_name = $req['supplier_name'];
-        $debt->doc_receive = $req['doc_receive'];
-        $debt->debt_year = $req['debt_year'];
-        $debt->debt_amount = $req['debt_amount'];
-        $debt->debt_vatrate = $req['debt_vatrate'];
-        $debt->debt_vat = $req['debt_vat'];
-        $debt->debt_total = $req['debt_total'];
-        $debt->debt_remark = $req['debt_remark'];
+        $asset = Asset::find($req['asset_id']);
+        $asset->asset_no = $req['asset_no'];
+        $asset->asset_name = $req['asset_name'];
+        $asset->description = $req['description'];
+        $asset->asset_type = $req['asset_type'];
+        $asset->amount = $req['amount'];
+        $asset->unit = $req['unit'];
+        $asset->unit_price = $req['unit_price'];
+        $asset->purchased_method = $req['method'];
+        $asset->reg_no = $req['reg_no'];
+        $asset->budget_type = $req['budget_type'];
+        $asset->year = $req['year'];
+        $asset->supplier = $req['supplier'];
+        $asset->doc_type = $req['doc_type'];
+        $asset->doc_no = $req['doc_no'];
+        $asset->doc_date = $req['doc_date'];
+        $asset->date_in = $req['date_in'];
+        $asset->remark = $req['remark'];
+        $asset->status = $req['status'];
 
-        $debt->debt_creby = $req['debt_creby'];
-        $debt->debt_credate = date("Y-m-d H:i:s");
-        $debt->debt_userid = $req['debt_userid'];
-        $debt->debt_chgdate = date("Y-m-d H:i:s");
+        /** Upload image */
+        $asset->image = '';
 
-        if($debt->save()) {
+        if($asset->save()) {
             return [
                 "status" => "success",
                 "message" => "Insert success.",
@@ -177,11 +185,11 @@ class AssetController extends Controller
 
     }
 
-    public function delete($debtId)
+    public function delete($assetId)
     {
-        $debt = Debt::find($debtId);
+        $asset = Asset::find($assetId);
 
-        if($debt->delete()) {
+        if($asset->delete()) {
             return [
                 "status" => "success",
                 "message" => "Delete success.",
@@ -194,29 +202,19 @@ class AssetController extends Controller
         }   
     }
 
-    public function setZero(Request $req)
+    public function discharge(Request $req)
     {
-        if(Debt::where('debt_id', '=', $req['debt_id'])->update(['debt_status' => '4']) <> 0) {
+        if(Asset::where('asset_id', '=', $req['asset_id'])
+                ->update(['status' => '4']) <> 0) {
             return [
                 'status' => 'success',
-                'message' => 'Updated id ' . $req['debt_id'] . 'is successed.',
+                'message' => 'Updated id ' .$req['asset_id']. 'is successed.',
             ];
         } else {
             return [
                 'status' => 'error',
-                'message' => 'Updated id ' . $req['debt_id'] . 'is failed.',
+                'message' => 'Updated id ' .$req['asset_id']. 'is failed.',
             ];
         }
-    }
-
-    public function supplierDebt($creditor)
-    {
-        /** 0=รอดำเนินการ,1=ขออนุมัติ,2=ตัดจ่าย,3=ยกเลิก,4=ลดหนี้ศุนย์ */
-        return [
-            'assets' => Debt::where(['supplier_id' => $creditor])
-                            ->where(['debt_status' => 0])
-                            ->with('debttype')
-                            ->paginate(10),
-        ];
     }
 }

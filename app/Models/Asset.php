@@ -31,6 +31,11 @@ class Asset extends Model
         return $this->belongsTo('App\Models\DocumentType', 'document_type', 'document_type_id');
     }
 
+    public function unit()
+    {
+        return $this->belongsTo('App\Models\AssetUnit', 'asset_unit', 'unit_id');
+    }
+
     public function purchasedMethod()
     {
         return $this->belongsTo('App\Models\PurchasedMethod', 'purchased_method', 'method_id');

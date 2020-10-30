@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\AssetType;
+use App\Models\AssetCategory;
 
 class AssetTypeController extends Controller
 {
@@ -28,6 +29,15 @@ class AssetTypeController extends Controller
         ];
     }
 
+    public function getAjexAll($cateId)
+    {
+        $types = AssetType::where('cate_id', '=', $cateId)->get();
+
+        return [
+            'types' => $types,
+        ];
+    }
+
     private function generateAutoId()
     {
         $type = \DB::table('asset_types')
@@ -44,20 +54,17 @@ class AssetTypeController extends Controller
     public function add()
     {
     	return view('asset-types.add', [
-            'cates' => \DB::table('asset_categories')->select('*')->get(),
+            'cates' => AssetCategory::all(),
     	]);
     }
 
     public function store(Request $req)
     {
-        $lastId = $this->generateAutoId();
-
         $type = new AssetType();
-        $type->type_id = $lastId;
+        // $type->type_id = $this->generateAutoId();
+        $type->type_no = $req['type_no'];
         $type->type_name = $req['type_name'];
         $type->cate_id = $req['cate_id'];
-        // $type->cate_name = $req['cate_name'];
-        $type->type_status = '1';
 
         if($type->save()) {
             return [

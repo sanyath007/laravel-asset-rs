@@ -55,17 +55,18 @@ app.controller('assetTypeCtrl', function($scope, $http, toaster, CONFIG, ModalSe
             toaster.pop('warning', "", 'กรุณาข้อมูลให้ครบก่อน !!!');
             return;
         } else {
-            $http.post(CONFIG.baseUrl + '/asset-type/store', $scope.debttype)
+            console.log($scope.type);
+            $http.post(CONFIG.baseUrl + '/asset-type/store', $scope.type)
             .then(function(res) {
                 console.log(res);
                 toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
             }, function(err) {
                 console.log(err);
                 toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
-            });            
+            });        
         }
 
-        document.getElementById('frmNewDebttype').reset();
+        document.getElementById('frmNewAssetType').reset();
     }
 
     $scope.getAssettype = function(debttypeId) {

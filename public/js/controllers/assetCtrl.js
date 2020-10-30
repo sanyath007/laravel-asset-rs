@@ -6,7 +6,9 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
     $scope.cboAssetStatus = "";
     $scope.searchKeyword = "";
 
+    $scope.types = [];
     $scope.assets = [];
+
     $scope.asset = {
         asset_id: '',
         asset_no: '',
@@ -16,48 +18,49 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
         amount: '',
         unit: '',
         unit_price: '',
-        purchased_method: '',
+        method: '',
         image: '',
         reg_no: '',
         budget_type: '',
         year: '',
         supplier: '',
+        doc_type: '',
         doc_no: '',
         doc_date: '',
-        doc_type: '',
         date_in: '',
         remark: '',
+        status: '',
     };
 
     $scope.barOptions = {};
 
-    $scope.clearDebtObj = function() {
-        $scope.debt = {
-            debt_date: '',
-            debt_doc_recno: '',
-            debt_doc_recdate: '',
-            deliver_no: '',
-            deliver_date: '',
-            debt_doc_no: '',
-            debt_doc_date: '',
-            debt_type_id: '',
-            debt_type_detail: '',
-            debt_month: '',
-            debt_year: '',
-            supplier_id: '',
-            supplier_name: '',
-            doc_receive: '',
-            debt_amount: '',
-            debt_vatrate: '',
-            debt_vat: '',
-            debt_total: '',
-            debt_remark: '',
-            debt_creby: '',
-            debt_userid: ''
+    $scope.clearAssetObj = function() {
+        $scope.asset = {
+            asset_id: '',
+            asset_no: '',
+            asset_name: '',
+            description: '',
+            asset_type: '',
+            amount: '',
+            unit: '',
+            unit_price: '',
+            method: '',
+            image: '',
+            reg_no: '',
+            budget_type: '',
+            year: '',
+            supplier: '',
+            doc_no: '',
+            doc_date: '',
+            doc_type: '',
+            date_in: '',
+            remark: '',
+            status: '',
         };
     };
 
     $scope.getData = function(event) {
+        console.log(event);
         $scope.assets = [];
         $scope.loading = true;
 
@@ -67,10 +70,22 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
         let searchKey = $("#searchKey").val() === '' ? 0 : $("#searchKey").val();
 
         $http.get(CONFIG.baseUrl+ '/asset/search/' +assetCate+ '/' +assetType+ '/' +assetStatus+ '/' +searchKey)
-        .then(function(res) {
-            console.log(res);
+        .then(function(res) {            
             $scope.assets = res.data.assets.data;
             $scope.pager = res.data.assets;
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    }
+
+    $scope.getAssetType = function () {
+        console.log($scope.asset.asset_cate);
+        $http.get(CONFIG.baseUrl+ '/asset-type/get-ajex-all/' +$scope.asset.asset_cate)
+        .then(function(res) {
+            $scope.types = res.data.types;
 
             $scope.loading = false;
         }, function(err) {
@@ -169,17 +184,12 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
     }
 
     $scope.add = function(event) {
-        console.log(event);
         event.preventDefault();
 
-        var creditor = $("#debtType").val();
-        console.log(creditor);
-
         if(creditor === '') {
-            console.log("You doesn't select creditor !!!");
-            toaster.pop('warning', "", "คุณยังไม่ได้เลือกเจ้าหนี้ !!!");
+            toaster.pop('warning', "", "คุณยังไม่ได้เลือก... !!!");
         } else {
-            window.location.href = CONFIG.baseUrl + '/debt/add/' + creditor;
+            window.location.href = CONFIG.baseUrl + '/asset/add';
         }
     }
 
@@ -193,20 +203,11 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
             return;
         } else {
             /** Convert thai date to db date. */
-            $scope.debt.debt_date = StringFormatService.convToDbDate($scope.debt.debt_date);
-            $scope.debt.debt_doc_recdate = StringFormatService.convToDbDate($scope.debt.debt_doc_recdate);
-            $scope.debt.deliver_date = StringFormatService.convToDbDate($scope.debt.deliver_date);
-            $scope.debt.debt_doc_date = ($scope.debt.debt_doc_date) ? StringFormatService.convToDbDate($scope.debt.debt_doc_date) : '';
-            $scope.debt.doc_receive = StringFormatService.convToDbDate($scope.debt.doc_receive);
-            /** Get supplier data */
-            $scope.debt.supplier_id = $("#supplier_id").val();
-            $scope.debt.supplier_name = $("#supplier_name").val();
-            /** Get user id */
-            $scope.debt.debt_creby = $("#user").val();
-            $scope.debt.debt_userid = $("#user").val();
-            console.log($scope.debt);
+            $scope.asset.date_in = StringFormatService.convToDbDate($scope.asset.date_in);
+            $scope.asset.doc_date = StringFormatService.convToDbDate($scope.asset.doc_date);
+            console.log($scope.asset);
 
-            $http.post(CONFIG.baseUrl + '/debt/store', $scope.debt)
+            $http.post(CONFIG.baseUrl + '/asset/store', $scope.asset)
             .then(function(res) {
                 console.log(res);
                 toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
@@ -217,15 +218,15 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
         }
 
         /** Clear control value and model data */
-        document.getElementById('frmNewDebt').reset();
-        $scope.clearDebtObj();
+        document.getElementById('frmNewAsset').reset();
+        $scope.clearAssetObj();
     }
 
-    $scope.getDebt = function(debtId) {
-        $http.get(CONFIG.baseUrl + '/debt/get-debt/' +debtId)
+    $scope.getAsset = function(assetId) {
+        $http.get(CONFIG.baseUrl + '/asset/get-asset/' +assetId)
         .then(function(res) {
             console.log(res);
-            $scope.debt = res.data.debt;
+            $scope.debt = res.data.asset;
 
             /** Convert db date to thai date. */
             $scope.debt.debt_date = StringFormatService.convFromDbDate($scope.debt.debt_date);
@@ -309,11 +310,11 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
         $scope.getDebtChart($scope.cboDebtType);
     };
 
-    $scope.setzero = function(debtId) {
-        console.log(debtId);
+    $scope.discharge = function(assetId) {
+        console.log(assetId);
 
-        if(confirm("คุณต้องลดหนี้เป็นศูนย์รายการหนี้เลขที่ " + debtId + " ใช่หรือไม่?")) {
-            $http.post(CONFIG.BASE_URL + '/debt/setzero', { debt_id: debtId })
+        if(confirm("คุณต้องลดหนี้เป็นศูนย์รายการหนี้เลขที่ " + assetId + " ใช่หรือไม่?")) {
+            $http.post(CONFIG.BASE_URL + '/asset/discharge', { asset_id: assetId })
             .then(function(res) {
                 console.log(res);
                 if(res.data.status == 'success') {
@@ -327,9 +328,5 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
                 toaster.pop('error', "พบข้อผิดพลาดในระหว่างการดำเนินการ !!!", "");
             });
         }
-
-        /** Get debt list and re-render chart */
-        $scope.getDebtData('/debt/rpt'); 
-        $scope.getDebtChart($scope.cboDebtType);
     };
 });
