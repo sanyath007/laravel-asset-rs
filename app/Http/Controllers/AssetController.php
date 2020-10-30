@@ -202,7 +202,17 @@ class AssetController extends Controller
         }   
     }
 
-    public function discharge(Request $req)
+    public function discharge()
+    {
+        return view('assets.discharge-list', [
+            "suppliers" => Supplier::all(),
+            "cates"     => AssetCategory::all(),
+            "types"     => AssetType::all(),
+            "statuses"    => $this->status
+        ]);
+    }
+
+    public function doDischarge(Request $req)
     {
         if(Asset::where('asset_id', '=', $req['asset_id'])
                 ->update(['status' => '4']) <> 0) {

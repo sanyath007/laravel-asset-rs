@@ -58,7 +58,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="{{ url('asset/list') }}">
+								<a href="{{ url('asset/discharge') }}">
 									<i class="fa fa-circle-o"></i> จำหน่าย
 								</a>
 							</li>

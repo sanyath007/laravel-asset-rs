@@ -71,8 +71,8 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('asset/edit/{creditor}/{debtId}', 'AssetController@edit');
     Route::put('asset/update', 'AssetController@update');
     Route::delete('asset/delete/{debtId}', 'AssetController@delete');
-    Route::post('asset/setzero', 'AssetController@setZero');
-    Route::get('asset/{creditor}/list', 'AssetController@supplierDebt');
+    Route::get('asset/discharge', 'AssetController@discharge');
+    Route::post('asset/discharge', 'AssetController@doDischarge');
 
     /** Asset Type */
     Route::get('asset-type/list', 'AssetTypeController@list');
