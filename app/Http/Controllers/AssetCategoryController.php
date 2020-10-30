@@ -42,16 +42,15 @@ class AssetCategoryController extends Controller
     public function add()
     {
     	return view('asset-cates.add', [
-            'cates' => \DB::table('asset_categories')->select('*')->get(),
+            'cates' => AssetCategory::all(),
     	]);
     }
 
     public function store(Request $req)
     {
-        $lastId = $this->generateAutoId();
-
         $cate = new AssetCategory();
-        $cate->cate_id = $lastId;
+        // $cate->cate_id = $this->generateAutoId();
+        $cate->cate_no = $req['cate_no'];
         $cate->cate_name = $req['cate_name'];
 
         if($cate->save()) {

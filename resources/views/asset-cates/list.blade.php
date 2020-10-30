@@ -38,7 +38,7 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer">
-                            <a href="{{ url('/asset-type/add') }}" class="btn btn-primary"> เพิ่มหมวดครุภัณฑ์</a>
+                            <a href="{{ url('/asset-cate/add') }}" class="btn btn-primary"> เพิ่มหมวดครุภัณฑ์</a>
                         </div>
                     </form>
                 </div><!-- /.box -->

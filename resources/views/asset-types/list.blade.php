@@ -65,7 +65,7 @@
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
                                     <td style="text-align: center;">@{{ type.type_no }}</td>
                                     <td style="text-align: left;">@{{ type.type_name }}</td>
-                                    <td style="text-align: left;">@{{ type.cates.cate_name }}</td>
+                                    <td style="text-align: left;">@{{ type.cates.cate_no + '-' +type.cates.cate_name }}</td>
                                     <td style="text-align: center;">
                                         <a ng-click="edit(type.type_id)" class="btn btn-warning btn-sm">
                                             <i class="fa fa-edit"></i>

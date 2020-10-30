@@ -1,8 +1,9 @@
 app.controller('assetCateCtrl', function($scope, $http, toaster, CONFIG, ModalService) {
 /** ################################################################################## */
     $scope.loading = false;
-    $scope.pager = [];
     $scope.cates = [];
+    $scope.pager = [];
+    
     $scope.cate = {
         cate_id: '',
         cate_no: '',
@@ -30,14 +31,14 @@ app.controller('assetCateCtrl', function($scope, $http, toaster, CONFIG, ModalSe
 
     $scope.getDataWithURL = function(URL) {
         console.log(URL);
-        $scope.debttypes = [];
+        $scope.cates = [];
         $scope.loading = true;
 
     	$http.get(URL)
     	.then(function(res) {
     		console.log(res);
-            $scope.debttypes = res.data.debttypes.data;
-            $scope.pager = res.data.debttypes;
+            $scope.cates = res.data.cates.data;
+            $scope.pager = res.data.cates;
 
             $scope.loading = false;
     	}, function(err) {
@@ -47,14 +48,15 @@ app.controller('assetCateCtrl', function($scope, $http, toaster, CONFIG, ModalSe
     }
 
     $scope.add = function(event, form) {
-        console.log(event);
         event.preventDefault();
+        console.log(form);
+        console.log($scope.cate);
 
         if (form.$invalid) {
             toaster.pop('warning', "", 'กรุณาข้อมูลให้ครบก่อน !!!');
             return;
         } else {
-            $http.post(CONFIG.baseUrl + '/asset-cate/store', $scope.debttype)
+            $http.post(CONFIG.baseUrl + '/asset-cate/store', $scope.cate)
             .then(function(res) {
                 console.log(res);
                 toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
@@ -64,31 +66,31 @@ app.controller('assetCateCtrl', function($scope, $http, toaster, CONFIG, ModalSe
             });            
         }
 
-        document.getElementById('frmNewDebttype').reset();
+        document.getElementById('frmNewAssetCate').reset();
     }
 
-    $scope.getAssettype = function(debttypeId) {
-        $http.get(CONFIG.baseUrl + '/asset-cate/get-asset-type/' +debttypeId)
+    $scope.getAssettype = function(cateId) {
+        $http.get(CONFIG.baseUrl + '/asset-cate/get-asset-cate/' +cateId)
         .then(function(res) {
             console.log(res);
-            $scope.debttype = res.data.debttype;
+            $scope.cate = res.data.cate;
         }, function(err) {
             console.log(err);
         });
     }
 
-    $scope.edit = function(debttypeId) {
-        console.log(debttypeId);
+    $scope.edit = function(cateId) {
+        console.log(cateId);
 
-        window.location.href = CONFIG.baseUrl + '/asset-cate/edit/' + debttypeId;
+        window.location.href = CONFIG.baseUrl + '/asset-cate/edit/' + cateId;
     };
 
-    $scope.update = function(event, form, debttypeId) {
-        console.log(debttypeId);
+    $scope.update = function(event, form, cateId) {
+        console.log(cateId);
         event.preventDefault();
 
-        if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + debttypeId + " ใช่หรือไม่?")) {
-            $http.put(CONFIG.baseUrl + '/asset-cate/update/', $scope.debttype)
+        if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + cateId + " ใช่หรือไม่?")) {
+            $http.put(CONFIG.baseUrl + '/asset-cate/update/', $scope.cate)
             .then(function(res) {
                 console.log(res);
                 toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
@@ -99,11 +101,11 @@ app.controller('assetCateCtrl', function($scope, $http, toaster, CONFIG, ModalSe
         }
     };
 
-    $scope.delete = function(debttypeId) {
-        console.log(debttypeId);
+    $scope.delete = function(cateId) {
+        console.log(cateId);
 
-        if(confirm("คุณต้องลบรายการหนี้เลขที่ " + debttypeId + " ใช่หรือไม่?")) {
-            $http.delete(CONFIG.baseUrl + '/asset-cate/delete/' +debttypeId)
+        if(confirm("คุณต้องลบรายการหนี้เลขที่ " + cateId + " ใช่หรือไม่?")) {
+            $http.delete(CONFIG.baseUrl + '/asset-cate/delete/' +cateId)
             .then(function(res) {
                 console.log(res);
                 toaster.pop('success', "", 'ลบข้อมูลเรียบร้อยแล้ว !!!');

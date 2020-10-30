@@ -31,14 +31,14 @@ app.controller('assetTypeCtrl', function($scope, $http, toaster, CONFIG, ModalSe
 
     $scope.getDataWithURL = function(URL) {
         console.log(URL);
-        $scope.debttypes = [];
+        $scope.types = [];
         $scope.loading = true;
 
     	$http.get(URL)
     	.then(function(res) {
     		console.log(res);
-            $scope.debttypes = res.data.debttypes.data;
-            $scope.pager = res.data.debttypes;
+            $scope.types = res.data.types.data;
+            $scope.pager = res.data.types;
 
             $scope.loading = false;
     	}, function(err) {
