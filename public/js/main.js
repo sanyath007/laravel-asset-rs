@@ -11,30 +11,57 @@ if(window){
 
 var app = angular.module('app', ['xeditable','ngTagsInput','toaster','ngAnimate','angularModalService']);
 
+/** App Config */
 app.constant('CONFIG', env);
-
-// app.factory('_', ['window', function () {
-//     return window._;
-// }]);
 
 app.run(function(editableOptions) {
     editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
     editableOptions.activate = 'select';
 });
 
-app.controller('ModalController', function($scope, close){
-	// close('Success!');
-});
+/** Global functions */
+app.run(function ($rootScope, $window, $http, toaster) {
+	$rootScope.formError = null;
 
+	$rootScope.formValidate = function (event, URL, validData, form) {
+		event.preventDefault();
+		
+		$http.post(env.baseUrl + URL, { ...validData })
+			.then(function (res) {
+				$rootScope.formError = res.data;
+
+				if ($rootScope.formError.success === 0) {
+					toaster.pop('error', "", "คุณกรอกข้อมูลไม่ครบ !!!");
+				} else {
+					$(form).submit();
+				}
+			})
+			.catch(function (res) {
+				console.log(res);
+			});
+	};
+
+	$rootScope.checkValidate = function (validObj, field) {
+		let status = false;
+		
+		if($rootScope.formError) {
+			status = ($rootScope.formError.errors.hasOwnProperty(field) && validObj[field] === '') ? true : false;
+		}
+
+		return status;
+	};
+}); /** Global functions */
+
+/** Filter functions */
 app.filter('thdate', function($filter)
 {
  	return function(input)
  	{
-  		if(input == null){ return ""; } 
+		if(input == null){ return ""; } 
 
-  		var arrDate = input.split('-');
-  		var thdate = arrDate[2]+ '/' +arrDate[1]+ '/' +(parseInt(arrDate[0])+543);
- 
-  		return thdate;
+		var arrDate = input.split('-');
+		var thdate = arrDate[2]+ '/' +arrDate[1]+ '/' +(parseInt(arrDate[0])+543);
+
+		return thdate;
  	};
-});
+});/** Filter functions */

@@ -9,6 +9,27 @@ use App\Models\AssetCategory;
 
 class AssetTypeController extends Controller
 {
+    public function formValidate (Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'type_no' => 'required',
+            'type_name' => 'required',
+            'cate_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return [
+                'success' => 0,
+                'errors' => $validator->getMessageBag()->toArray(),
+            ];
+        } else {
+            return [
+                'success' => 1,
+                'errors' => $validator->getMessageBag()->toArray(),
+            ];
+        }
+    }
+
     public function list()
     {
     	return view('asset-types.list');
@@ -40,7 +61,7 @@ class AssetTypeController extends Controller
 
     private function generateAutoId()
     {
-        $type = \DB::table('asset_types')
+        $cate = \DB::table('asset_types')
                         ->select('type_no')
                         ->orderBy('type_no', 'DESC')
                         ->first();

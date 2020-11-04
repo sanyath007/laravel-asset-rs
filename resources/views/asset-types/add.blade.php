@@ -32,39 +32,13 @@
                         
                         <div class="box-body">
                             <div class="col-md-8">
-                                <div class="form-group" ng-class="{ 'has-error' : frmNewAssetType.type_no.$invalid}">
-                                    <label class="control-label">รหัสชนิดครุภัณฑ์ :</label>
-                                    <input
-                                        type="text"
-                                        id="type_no"
-                                        name="type_no"
-                                        ng-model="type.type_no"
-                                        class="form-control" required>
-                                    <div class="help-block" ng-show="frmNewAssetType.type_no.$error.required">
-                                        กรุณากรอกรหัสชนิดครุภัณฑ์ก่อน
-                                    </div>
-                                </div>
-
-                                <div class="form-group" ng-class="{ 'has-error' : frmNewAssetType.type_name.$invalid}">
-                                    <label class="control-label">ชื่อชนิดครุภัณฑ์ :</label>
-                                    <input
-                                        type="text"
-                                        id="type_name"
-                                        name="type_name"
-                                        ng-model="type.type_name"
-                                        class="form-control" required>
-                                    <div class="help-block" ng-show="frmNewAssetType.type_name.$error.required">
-                                        กรุณากรอกชื่อชนิดครุภัณฑ์ก่อน
-                                    </div>
-                                </div> 
-
-                                <div class="form-group" ng-class="{ 'has-error' : frmNewAssetType.cate_id.$invalid}">
+                                <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(type, 'cate_id')}">
                                     <label class="control-label">หมวดครุภัณฑ์ :</label>
                                     <select id="cate_id"
                                             name="cate_id"
                                             ng-model="type.cate_id"
                                             class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;" required>
+                                            style="width: 100%; font-size: 12px;">
                                             
                                         <option value="" selected="selected">-- กรุณาเลือก --</option>
 
@@ -77,15 +51,38 @@
                                         @endforeach
                                         
                                     </select>
-                                    <div class="help-block" ng-show="frmNewAssetType.cate_id.$error.required">
-                                        กรุณาเลือกหมวดครุภัณฑ์
-                                    </div>
+                                    <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(type, 'cate_id')"></span>
+                                    <span class="help-block" ng-show="checkValidate(type, 'cate_id')">กรุณาเลือกหมวดครุภัณฑ์</span>
+                                </div>
+
+                                <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(type, 'type_no')}">
+                                    <label class="control-label">รหัสชนิดครุภัณฑ์ :</label>
+                                    <input
+                                        type="text"
+                                        id="type_no"
+                                        name="type_no"
+                                        ng-model="type.type_no"
+                                        class="form-control">
+                                    <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(type, 'type_no')"></span>
+                                    <span class="help-block" ng-show="checkValidate(type, 'type_no')">กรุณากรอกรหัสชนิดครุภัณฑ์ก่อน</span>
+                                </div>
+
+                                <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(type, 'type_name')}">
+                                    <label class="control-label">ชื่อชนิดครุภัณฑ์ :</label>
+                                    <input
+                                        type="text"
+                                        id="type_name"
+                                        name="type_name"
+                                        ng-model="type.type_name"
+                                        class="form-control">
+                                    <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(type, 'type_name')"></span>
+                                    <span class="help-block" ng-show="checkValidate(type, 'type_name')">กรุณากรอกชื่อชนิดครุภัณฑ์ก่อน</span>
                                 </div>
                             </div>
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer clearfix">
-                            <button ng-click="add($event, frmNewAssetType)" class="btn btn-success pull-right">
+                            <button ng-click="formValidate($event, '/asset-type/validate', type, '#frmNewAssetType')" class="btn btn-success pull-right">
                                 บันทึก
                             </button>
                         </div><!-- /.box-footer -->

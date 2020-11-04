@@ -76,14 +76,15 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     /** Asset Type */
     Route::get('asset-type/list', 'AssetTypeController@list');
-	Route::get('asset-type/search/{searchKey}', 'AssettypeController@search');
-    Route::get('asset-type/get-asset-type/{typeId}', 'AssettypeController@getById');
-    Route::get('asset-type/get-ajex-all/{cateId}', 'AssettypeController@getAjexAll');
+	Route::get('asset-type/search/{searchKey}', 'AssetTypeController@search');
+    Route::get('asset-type/get-asset-type/{typeId}', 'AssetTypeController@getById');
+    Route::get('asset-type/get-ajex-all/{cateId}', 'AssetTypeController@getAjexAll');
     Route::get('asset-type/add', 'AssetTypeController@add');
-    Route::post('asset-type/store', 'AssettypeController@store');
-    Route::get('asset-type/edit/{typeId}', 'AssettypeController@edit');
-    Route::put('asset-type/update', 'AssettypeController@update');
-    Route::delete('asset-type/delete/{typeId}', 'AssettypeController@delete');
+    Route::post('asset-type/store', 'AssetTypeController@store');
+    Route::get('asset-type/edit/{typeId}', 'AssetTypeController@edit');
+    Route::put('asset-type/update', 'AssetTypeController@update');
+    Route::delete('asset-type/delete/{typeId}', 'AssetTypeController@delete');
+    Route::post('/asset-type/validate', 'AssetTypeController@formValidate');
 
     /** Asset Category */
     Route::get('asset-cate/list', 'AssetCategoryController@list');
