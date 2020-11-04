@@ -8,6 +8,26 @@ use App\Models\AssetCategory;
 
 class AssetCategoryController extends Controller
 {
+    public function formValidate (Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'cate_no' => 'required',
+            'cate_name' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return [
+                'success' => 0,
+                'errors' => $validator->getMessageBag()->toArray(),
+            ];
+        } else {
+            return [
+                'success' => 1,
+                'errors' => $validator->getMessageBag()->toArray(),
+            ];
+        }
+    }
+
     public function list()
     {
     	return view('asset-cates.list');

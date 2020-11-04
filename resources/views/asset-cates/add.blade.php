@@ -32,36 +32,37 @@
                         
                         <div class="box-body">
                             <div class="col-md-8">
-                                <div class="form-group" ng-class="{ 'has-error' : frmNewAssetCate.cate_no.$invalid}">
+                                <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(cate, 'cate_no')}">
                                     <label class="control-label">รหัสหมวดครุภัณฑ์ :</label>
                                     <input
                                         type="text"
                                         id="cate_no"
                                         name="cate_no"
                                         ng-model="cate.cate_no"
-                                        class="form-control" required>
-                                    <div class="help-block" ng-show="frmNewAssetCate.cate_no.$error.required">
-                                        กรุณากรอกรหัสหมวดครุภัณฑ์ก่อน
-                                    </div>
+                                        class="form-control">
+                                    <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(cate, 'cate_no')"></span>
+                                    <span class="help-block" ng-show="checkValidate(cate, 'cate_no')">กรุณากรอกรหัสหมวดครุภัณฑ์ก่อน</span>
                                 </div> 
 
-                                <div class="form-group" ng-class="{ 'has-error' : frmNewAssetCate.cate_name.$invalid}">
+                                <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(cate, 'cate_name')}">
                                     <label class="control-label">ชื่อหมวดครุภัณฑ์ :</label>
                                     <input
                                         type="text"
                                         id="cate_name"
                                         name="cate_name"
                                         ng-model="cate.cate_name"
-                                        class="form-control" required>
-                                    <div class="help-block" ng-show="frmNewAssetCate.cate_name.$error.required">
-                                        กรุณากรอกชื่อหมวดครุภัณฑ์ก่อน
-                                    </div>
+                                        class="form-control">
+                                    <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(cate, 'cate_name')"></span>
+                                    <span class="help-block" ng-show="checkValidate(cate, 'cate_name')">กรุณากรอกชื่อหมวดครุภัณฑ์ก่อน</span>
                                 </div> 
                             </div>
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer clearfix">
-                            <button ng-click="add($event, frmNewAssetCate)" class="btn btn-success pull-right">
+                            <button
+                                ng-click="formValidate($event, '/asset-cate/validate', cate, '#frmNewAssetCate')"
+                                class="btn btn-success pull-right"
+                            >
                                 บันทึก
                             </button>
                         </div><!-- /.box-footer -->

@@ -95,6 +95,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('asset-cate/edit/{cateeId}', 'AssetCategoryController@edit');
     Route::put('asset-cate/update', 'AssetCategoryController@update');
     Route::delete('asset-cate/delete/{cateeId}', 'AssetCategoryController@delete');
+    Route::post('/asset-cate/validate', 'AssetCategoryController@formValidate');
 
     /** Supplier */
     Route::get('supplier/list', 'SupplierController@list');
