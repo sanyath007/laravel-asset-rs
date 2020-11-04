@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  asset_app:
+    image: ascdc/apache2-php7
+    container_name: asset_app
+    ports:
+      - "8080:80"
+    depends_on: 
+      - db
+    volumes:
+      - .:/var/www/html
+
+  db:
+    image: mariadb
+    environment: 
+      MYSQL_ROOT_PASSWORD: "root"
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
+  
+  myadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8000:80"
+    depends_on: 
+      - db
+    environment:
+      PMA_HOST: db

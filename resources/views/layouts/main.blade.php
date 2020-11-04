@@ -6,14 +6,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Asset Management System</title>
+	<title>Asset Management System</title>
 
-	<link rel="stylesheet" href="{{ asset('/css/bootstrap.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('/bower/bootstrap/dist/css/bootstrap.min.css') }}">
 
 	<!-- Compiled and minified CSS -->
-  	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css"> -->
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css"> -->
 	<!-- <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/> -->
 	<link rel="stylesheet" href="{{ asset('/css/select2.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('/css/bootstrap-datepicker.min.css') }}">
@@ -29,19 +29,19 @@
 	<!-- <link rel="stylesheet" href="{{ asset('/css/theme.css') }}"> -->
 
 	<!-- Ionicons -->
-  	<link rel="stylesheet" href="{{ asset('/css/ionicons.min.css') }}">
-  	<!-- jQuery jvectormap -->
-  	<link rel="stylesheet" href="{{ asset('/css/jquery-jvectormap.css') }}">
-  	<!-- Theme style -->
-  	<link rel="stylesheet" href="{{ asset('/css/AdminLTE.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('/css/ionicons.min.css') }}">
+	<!-- jQuery jvectormap -->
+	<link rel="stylesheet" href="{{ asset('/css/jquery-jvectormap.css') }}">
+	<!-- Theme style -->
+	<link rel="stylesheet" href="{{ asset('/css/AdminLTE.min.css') }}">
  	<!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
-  	<link rel="stylesheet" href="{{ asset('/css/skins/_all-skins.min.css') }}">
-  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/balloon-css/0.5.0/balloon.min.css">
+	<link rel="stylesheet" href="{{ asset('/css/skins/_all-skins.min.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/balloon-css/0.5.0/balloon.min.css">
 	<!-- Fonts -->
 	<!-- <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Roboto:400,300' type='text/css'> -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <!-- Inline Style -->
+	<!-- Inline Style -->
 	<style type="text/css">
 		.has-error .select2-selection {
 		    border-color:#a94442;
@@ -52,12 +52,12 @@
 	
 	<!-- Scripts -->
 	<script src="{{ asset('/js/env.js') }}"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="{{ asset('/bower/jquery/dist/jquery.min.js') }}"></script>
+	<script src="{{ asset('/bower/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('/bower/angular/angular.min.js') }}"></script>
 	<script src="{{ asset('/bower/moment/moment.js') }}"></script>
-    <script src="{{ asset('/bower/fullcalendar/dist/fullcalendar.min.js') }}"></script>
-    <script src="{{ asset('/bower/fullcalendar/dist/locale/th.js') }}"></script>
+	<script src="{{ asset('/bower/fullcalendar/dist/fullcalendar.min.js') }}"></script>
+	<script src="{{ asset('/bower/fullcalendar/dist/locale/th.js') }}"></script>
 	<script src="{{ asset('/bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
 	<script src="{{ asset('/bower/ng-tags-input/ng-tags-input.min.js') }}"></script>
 	<script src="{{ asset('/bower/angular-animate/angular-animate.min.js') }}"></script>

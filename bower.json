@@ -1,0 +1,31 @@
+{
+  "name": "laravel-asset-rs",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Sanyath Thammawong <sanyath007@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/sanyath007/laravel-asset-rs",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-modal-service": "^0.12.1",
+    "angular-xeditable": "^0.8.0",
+    "axios": "^0.16.2",
+    "AngularJS-Toaster": "angularjs-toaster#^2.1.0",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
+    "fullcalendar": "^3.4.0",
+    "ng-tags-input": "3.2.0",
+    "underscore": "^1.8.3",
+    "moment": "^2.18.1",
+    "jquery": "3.5.1",
+    "bootstrap": "3.4.1"
+  }
+}
