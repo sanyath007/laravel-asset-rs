@@ -51,17 +51,6 @@ Route::group(['middleware' => ['web','auth']], function () {
     // Route::put('payment/update', 'PaymentController@update');
     // Route::delete('payment/delete/{appId}', 'PaymentController@delete');
 
-    // Route::get('account/arrear', 'AccountController@arrear');    
-    // Route::get('account/arrear-rpt/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@arrearRpt');     
-    // Route::get('account/arrear-excel/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@arrearExcel'); 
-    // Route::get('account/creditor-paid', 'AccountController@creditorPaid');    
-    // Route::get('account/creditor-paid-rpt/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidRpt');     
-    // Route::get('account/creditor-paid-excel/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidExcel');
-    // Route::get('account/ledger/{sdate}/{edate}/{showall}', 'AccountController@ledger');     
-    // Route::get('account/ledger-excel/{sdate}/{edate}/{showall}', 'AccountController@ledgerExcel');
-    // Route::get('account/ledger-debttype/{sdate}/{edate}/{showall}', 'AccountController@ledgerDebttype');     
-    // Route::get('account/ledger-debttype-excel/{sdate}/{edate}/{showall}', 'AccountController@ledgerDebttypeExcel'); 
-
     /** Asset */
     Route::get('asset/list', 'AssetController@list');
     Route::get('asset/search/{cate}/{type}/{status}/{searchKey}', 'AssetController@search');
@@ -96,6 +85,17 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::put('asset-cate/update', 'AssetCategoryController@update');
     Route::delete('asset-cate/delete/{cateeId}', 'AssetCategoryController@delete');
     Route::post('/asset-cate/validate', 'AssetCategoryController@formValidate');
+
+    /** Asset Unit */
+    Route::get('asset-unit/list', 'AssetUnitController@list');
+    Route::get('asset-unit/search/{searchKey}', 'AssetUnitController@search');
+    Route::get('asset-unit/get-asset-unit/{unitId}', 'AssetUnitController@getById');
+    Route::get('asset-unit/add', 'AssetUnitController@add');
+    Route::post('asset-unit/store', 'AssetUnitController@store');
+    Route::get('asset-unit/edit/{unitId}', 'AssetUnitController@edit');
+    Route::put('asset-unit/update', 'AssetUnitController@update');
+    Route::delete('asset-unit/delete/{unitId}', 'AssetUnitController@delete');
+    Route::post('/asset-unit/validate', 'AssetUnitController@formValidate');
 
     /** Supplier */
     Route::get('supplier/list', 'SupplierController@list');

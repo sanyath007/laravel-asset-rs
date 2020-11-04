@@ -91,7 +91,8 @@
 	<script src="{{ asset('/js/controllers/homeCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/assetCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/assetCateCtrl.js') }}"></script>
-	<script src="{{ asset('/js/controllers/assetTypeCtrl.js') }}"></script>	
+	<script src="{{ asset('/js/controllers/assetTypeCtrl.js') }}"></script>
+	<script src="{{ asset('/js/controllers/assetUnitCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/supplierCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/accountCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/reportCtrl.js') }}"></script>

@@ -145,6 +145,11 @@
 								</a>
 							</li>
 							<li>
+								<a href="{{ url('/asset-unit/list') }}">
+									<i class="fa fa-circle-o"></i> หน่วยครุภัณฑ์
+								</a>
+							</li>
+							<li>
 								<a href="{{ url('/supplier/list') }}">
 									<i class="fa fa-circle-o"></i> ผู้จัดจำหน่าย
 								</a>
