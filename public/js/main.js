@@ -23,7 +23,7 @@ app.run(function(editableOptions) {
 app.run(function ($rootScope, $window, $http, toaster) {
 	$rootScope.formError = null;
 
-	$rootScope.formValidate = function (event, URL, validData, form) {
+	$rootScope.formValidate = function (event, URL, validData, form, callback) {
 		event.preventDefault();
 		
 		$http.post(env.baseUrl + URL, { ...validData })
@@ -33,7 +33,7 @@ app.run(function ($rootScope, $window, $http, toaster) {
 				if ($rootScope.formError.success === 0) {
 					toaster.pop('error', "", "คุณกรอกข้อมูลไม่ครบ !!!");
 				} else {
-					$(form).submit();
+					callback(event, form);
 				}
 			})
 			.catch(function (res) {

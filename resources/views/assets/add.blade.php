@@ -388,7 +388,7 @@
                   
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/asset/validate', type, '#frmNewAsset')"
+                                ng-click="formValidate($event, '/asset/validate', asset, 'frmNewAsset', store)"
                                 class="btn btn-success pull-right"
                             >
                                 บันทึก

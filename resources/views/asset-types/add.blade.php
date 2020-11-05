@@ -82,7 +82,7 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer clearfix">
-                            <button ng-click="formValidate($event, '/asset-type/validate', type, '#frmNewAssetType')" class="btn btn-success pull-right">
+                            <button ng-click="formValidate($event, '/asset-type/validate', type, 'frmNewAssetType', add)" class="btn btn-success pull-right">
                                 บันทึก
                             </button>
                         </div><!-- /.box-footer -->

@@ -64,10 +64,10 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
         $scope.assets = [];
         $scope.loading = true;
 
-        let assetCate = $("#assetCate").val() === '' ? 0 : $("#assetCate").val();
-        let assetType = $("#assetType").val() === '' ? 0 : $("#assetType").val();
-        let assetStatus = $("#assetStatus").val() === '' ? 0 : $("#assetStatus").val();
-        let searchKey = $("#searchKey").val() === '' ? 0 : $("#searchKey").val();
+        let assetCate = $scope.cboAssetCate === '' ? 0 : $scope.cboAssetCate;
+        let assetType = $scope.cboAssetType === '' ? 0 : $scope.cboAssetType;
+        let assetStatus = $scope.cboAssetStatus === '' ? 0 : $scope.cboAssetStatus; 
+        let searchKey = $scope.searchKeyword === '' ? 0 : $scope.searchKeyword;
 
         $http.get(CONFIG.baseUrl+ '/asset/search/' +assetCate+ '/' +assetType+ '/' +assetStatus+ '/' +searchKey)
         .then(function(res) {            
@@ -82,8 +82,7 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
     }
 
     $scope.getAssetType = function () {
-        console.log($scope.asset.asset_cate);
-        $http.get(CONFIG.baseUrl+ '/asset-type/get-ajex-all/' +$scope.asset.asset_cate)
+        $http.get(CONFIG.baseUrl+ '/asset-type/get-ajax-all/' +$scope.asset.asset_cate)
         .then(function(res) {
             $scope.types = res.data.types;
 
@@ -184,34 +183,26 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
     }
 
     $scope.store = function(event, form) {
-        console.log(event);
         event.preventDefault();
+        /** Convert thai date to db date. */
+        $scope.asset.date_in = StringFormatService.convToDbDate($scope.asset.date_in);
+        $scope.asset.doc_date = StringFormatService.convToDbDate($scope.asset.doc_date);
+        /** Get user id */
+        // $scope.asset.created_by = $("#user").val();
+        // $scope.asset.updated_by = $("#user").val();
+        console.log($scope.asset);
 
-        if (form.$invalid) {
-            console.log(form.$error);
-            toaster.pop('warning', "", 'กรุณาข้อมูลให้ครบก่อน !!!');
-            return;
-        } else {
-            /** Convert thai date to db date. */
-            $scope.asset.date_in = StringFormatService.convToDbDate($scope.asset.date_in);
-            $scope.asset.doc_date = StringFormatService.convToDbDate($scope.asset.doc_date);
-            /** Get user id */
-            $scope.asset.created_by = $("#user").val();
-            $scope.asset.updated_by = $("#user").val();
-            console.log($scope.asset);
-
-            $http.post(CONFIG.baseUrl + '/asset/store', $scope.asset)
-            .then(function(res) {
-                console.log(res);
-                toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
-            }, function(err) {
-                console.log(err);
-                toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
-            });            
-        }
+        $http.post(CONFIG.baseUrl + '/asset/store', $scope.asset)
+        .then(function(res) {
+            console.log(res);
+            toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
+        }, function(err) {
+            console.log(err);
+            toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
+        });
 
         /** Clear control value and model data */
-        document.getElementById('frmNewAsset').reset();
+        document.getElementById(form).reset();
         $scope.clearAssetObj();
     }
 

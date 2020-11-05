@@ -49,24 +49,17 @@ app.controller('assetCateCtrl', function($scope, $http, toaster, CONFIG, ModalSe
 
     $scope.add = function(event, form) {
         event.preventDefault();
-        console.log(form);
-        console.log($scope.cate);
 
-        if (form.$invalid) {
-            toaster.pop('warning', "", 'กรุณาข้อมูลให้ครบก่อน !!!');
-            return;
-        } else {
-            $http.post(CONFIG.baseUrl + '/asset-cate/store', $scope.cate)
-            .then(function(res) {
-                console.log(res);
-                toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
-            }, function(err) {
-                console.log(err);
-                toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
-            });            
-        }
+        $http.post(CONFIG.baseUrl + '/asset-cate/store', $scope.cate)
+        .then(function(res) {
+            console.log(res);
+            toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
+        }, function(err) {
+            console.log(err);
+            toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
+        });
 
-        document.getElementById('frmNewAssetCate').reset();
+        document.getElementById(form).reset();
     }
 
     $scope.getAssettype = function(cateId) {

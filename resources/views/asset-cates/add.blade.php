@@ -60,7 +60,7 @@
                   
                         <div class="box-footer clearfix">
                             <button
-                                ng-click="formValidate($event, '/asset-cate/validate', cate, '#frmNewAssetCate')"
+                                ng-click="formValidate($event, '/asset-cate/validate', cate, 'frmNewAssetCate', add)"
                                 class="btn btn-success pull-right"
                             >
                                 บันทึก

@@ -96,10 +96,12 @@
                                 </div><!-- /.form group -->                               
                                 
                                 <div class="form-group">
-                                    <label>ผู้จัดจำหน่าย</label>
+                                    <label>คำค้น</label>
                                     <input
                                         type="text"
                                         id="searchKey"
+                                        name="searchKey"
+                                        ng-model="searchKeyword"
                                         ng-keyup="getData($event)"
                                         class="form-control">
                                 </div>

@@ -48,49 +48,42 @@ app.controller('assetTypeCtrl', function($scope, $http, toaster, CONFIG, ModalSe
     }
 
     $scope.add = function(event, form) {
-        console.log(event);
         event.preventDefault();
 
-        if (form.$invalid) {
-            toaster.pop('warning', "", 'กรุณาข้อมูลให้ครบก่อน !!!');
-            return;
-        } else {
-            console.log($scope.type);
-            $http.post(CONFIG.baseUrl + '/asset-type/store', $scope.type)
-            .then(function(res) {
-                console.log(res);
-                toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
-            }, function(err) {
-                console.log(err);
-                toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
-            });        
-        }
-
-        document.getElementById('frmNewAssetType').reset();
-    }
-
-    $scope.getAssettype = function(debttypeId) {
-        $http.get(CONFIG.baseUrl + '/asset-type/get-asset-type/' +debttypeId)
+        $http.post(CONFIG.baseUrl + '/asset-type/store', $scope.type)
         .then(function(res) {
             console.log(res);
-            $scope.debttype = res.data.debttype;
+            toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
+        }, function(err) {
+            console.log(err);
+            toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
+        });
+
+        document.getElementById(form).reset();
+    }
+
+    $scope.getAssettype = function(typeId) {
+        $http.get(CONFIG.baseUrl + '/asset-type/get-asset-type/' +typeId)
+        .then(function(res) {
+            console.log(res);
+            $scope.type = res.data.type;
         }, function(err) {
             console.log(err);
         });
     }
 
-    $scope.edit = function(debttypeId) {
-        console.log(debttypeId);
+    $scope.edit = function(typeId) {
+        console.log(typeId);
 
-        window.location.href = CONFIG.baseUrl + '/asset-type/edit/' + debttypeId;
+        window.location.href = CONFIG.baseUrl + '/asset-type/edit/' + typeId;
     };
 
-    $scope.update = function(event, form, debttypeId) {
-        console.log(debttypeId);
+    $scope.update = function(event, form, typeId) {
         event.preventDefault();
+        console.log(typeId);
 
-        if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + debttypeId + " ใช่หรือไม่?")) {
-            $http.put(CONFIG.baseUrl + '/asset-type/update/', $scope.debttype)
+        if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + typeId + " ใช่หรือไม่?")) {
+            $http.put(CONFIG.baseUrl + '/asset-type/update/', $scope.type)
             .then(function(res) {
                 console.log(res);
                 toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
@@ -101,11 +94,11 @@ app.controller('assetTypeCtrl', function($scope, $http, toaster, CONFIG, ModalSe
         }
     };
 
-    $scope.delete = function(debttypeId) {
-        console.log(debttypeId);
+    $scope.delete = function(typeId) {
+        console.log(typeId);
 
-        if(confirm("คุณต้องลบรายการหนี้เลขที่ " + debttypeId + " ใช่หรือไม่?")) {
-            $http.delete(CONFIG.baseUrl + '/asset-type/delete/' +debttypeId)
+        if(confirm("คุณต้องลบรายการหนี้เลขที่ " + typeId + " ใช่หรือไม่?")) {
+            $http.delete(CONFIG.baseUrl + '/asset-type/delete/' +typeId)
             .then(function(res) {
                 console.log(res);
                 toaster.pop('success', "", 'ลบข้อมูลเรียบร้อยแล้ว !!!');
