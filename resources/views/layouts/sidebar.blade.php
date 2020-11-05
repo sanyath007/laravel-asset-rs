@@ -74,23 +74,8 @@
 						</a>
 						<ul class="treeview-menu">
 							<li>
-								<a href="{{ url('/account/ledger/0/0/0') }}">
-									<i class="fa fa-circle-o"></i> แยกประเภทเจ้าหนี้
-								</a>
-							</li>
-							<li>
-								<a href="{{ url('/account/ledger-debttype/0/0/0') }}">
-									<i class="fa fa-circle-o"></i> แยกประเภทหนี้
-								</a>
-							</li>
-							<li>
-								<a href="{{ url('/account/arrear') }}">
-									<i class="fa fa-circle-o"></i> ยอดหนี้ค้างจ่าย
-								</a>
-							</li>
-							<li>
-								<a href="{{ url('/account/creditor-paid') }}">
-									<i class="fa fa-circle-o"></i> เจ้าหนี้จ่ายชำระหนี้
+								<a href="{{ url('/deprec/list') }}">
+									<i class="fa fa-circle-o"></i> คำนวณค่าเสื่อมครุภัณฑ์
 								</a>
 							</li>
 						</ul>

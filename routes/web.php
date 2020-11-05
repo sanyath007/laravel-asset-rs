@@ -31,15 +31,15 @@ Route::group(['middleware' => 'web'], function() {
 });
 
 Route::group(['middleware' => ['web','auth']], function () {
-    // Route::get('approve/list', 'ApprovementController@list');
-    // Route::get('approve/search/{searchKey}', 'ApprovementController@search');
-    // Route::get('approve/get-approve/{appId}', 'ApprovementController@getById');
-    // Route::get('approve/add', 'ApprovementController@add');
-    // Route::post('approve/store', 'ApprovementController@store');
-    // Route::get('approve/detail/{appId}', 'ApprovementController@detail');
-    // Route::get('approve/edit/{appId}', 'ApprovementController@edit');
-    // Route::put('approve/update', 'ApprovementController@update');
-    // Route::delete('approve/delete/{appId}', 'ApprovementController@delete');
+    Route::get('deprec/list', 'DepreciationController@list');
+    Route::get('deprec/search', 'DepreciationController@search');
+    Route::get('deprec/get-deprec/{appId}', 'DepreciationController@getById');
+    Route::get('deprec/add', 'DepreciationController@add');
+    Route::post('deprec/store', 'DepreciationController@store');
+    Route::get('deprec/detail/{appId}', 'DepreciationController@detail');
+    Route::get('deprec/edit/{appId}', 'DepreciationController@edit');
+    Route::put('deprec/update', 'DepreciationController@update');
+    Route::delete('deprec/delete/{appId}', 'DepreciationController@delete');
 
     // Route::get('payment/list', 'PaymentController@list');
     // Route::get('payment/search/{searchKey}', 'PaymentController@search');
@@ -52,6 +52,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     // Route::delete('payment/delete/{appId}', 'PaymentController@delete');
 
     /** Asset */
+    Route::post('/asset/validate', 'AssetController@formValidate');
     Route::get('asset/list', 'AssetController@list');
     Route::get('asset/search/{cate}/{type}/{status}/{searchKey}', 'AssetController@search');
     Route::get('asset/get-asset/{debtId}', 'AssetController@getById');
@@ -62,9 +63,9 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::delete('asset/delete/{debtId}', 'AssetController@delete');
     Route::get('asset/discharge', 'AssetController@discharge');
     Route::post('asset/discharge', 'AssetController@doDischarge');
-    Route::post('/asset/validate', 'AssetController@formValidate');
 
     /** Asset Type */
+    Route::post('/asset-type/validate', 'AssetTypeController@formValidate');
     Route::get('asset-type/list', 'AssetTypeController@list');
 	Route::get('asset-type/search/{searchKey}', 'AssetTypeController@search');
     Route::get('asset-type/get-asset-type/{typeId}', 'AssetTypeController@getById');
@@ -74,9 +75,9 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('asset-type/edit/{typeId}', 'AssetTypeController@edit');
     Route::put('asset-type/update', 'AssetTypeController@update');
     Route::delete('asset-type/delete/{typeId}', 'AssetTypeController@delete');
-    Route::post('/asset-type/validate', 'AssetTypeController@formValidate');
 
     /** Asset Category */
+    Route::post('/asset-cate/validate', 'AssetCategoryController@formValidate');
     Route::get('asset-cate/list', 'AssetCategoryController@list');
     Route::get('asset-cate/search/{searchKey}', 'AssetCategoryController@search');
     Route::get('asset-cate/get-asset-cate/{cateeId}', 'AssetCategoryController@getById');
@@ -85,9 +86,9 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('asset-cate/edit/{cateeId}', 'AssetCategoryController@edit');
     Route::put('asset-cate/update', 'AssetCategoryController@update');
     Route::delete('asset-cate/delete/{cateeId}', 'AssetCategoryController@delete');
-    Route::post('/asset-cate/validate', 'AssetCategoryController@formValidate');
 
     /** Asset Unit */
+    Route::post('/asset-unit/validate', 'AssetUnitController@formValidate');
     Route::get('asset-unit/list', 'AssetUnitController@list');
     Route::get('asset-unit/search/{searchKey}', 'AssetUnitController@search');
     Route::get('asset-unit/get-asset-unit/{unitId}', 'AssetUnitController@getById');
@@ -96,7 +97,6 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('asset-unit/edit/{unitId}', 'AssetUnitController@edit');
     Route::put('asset-unit/update', 'AssetUnitController@update');
     Route::delete('asset-unit/delete/{unitId}', 'AssetUnitController@delete');
-    Route::post('/asset-unit/validate', 'AssetUnitController@formValidate');
 
     /** Supplier */
     Route::get('supplier/list', 'SupplierController@list');

@@ -94,7 +94,7 @@
 	<script src="{{ asset('/js/controllers/assetTypeCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/assetUnitCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/supplierCtrl.js') }}"></script>
-	<script src="{{ asset('/js/controllers/accountCtrl.js') }}"></script>
+	<script src="{{ asset('/js/controllers/depreciationCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/reportCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/approveCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/paymentCtrl.js') }}"></script>

@@ -3,25 +3,39 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Debt;
-use App\Models\DebtType;
-use App\Models\Creditor;
-use App\Models\Payment;
-use App\Models\PaymentDetail;
 
-use App\Exports\LedgerExport;
-use App\Exports\LedgerDebttypeExport;
-use App\Exports\ArrearExport;
-use App\Exports\CreditorPaidExport;
+use App\Models\Asset;
+use App\Models\AssetType;
+use App\Models\AssetCate;
+use App\Models\Supplier;
+use App\Models\Depreciation;
 
-class AccountController extends Controller
+// use App\Exports\LedgerExport;
+// use App\Exports\LedgerDebttypeExport;
+// use App\Exports\ArrearExport;
+// use App\Exports\CreditorPaidExport;
+
+class DepreciationController extends Controller
 {
-    public function arrear()
+    public function list()
     {
-        return view('accounts.arrear', [
-            "creditors" => Creditor::all(),
-            "debttypes" => DebtType::all(),
-        ]);
+        return view('depreciations.list');
+    }
+    
+    public function search()
+    {
+        $assets = Asset::whereIn('status', [1, 2, 3])
+                            ->with('assetType')
+                            ->with('supplier')
+                            ->with('budgetType')
+                            ->with('docType')
+                            ->with('purchasedMethod')
+                            ->orderBy('year')
+                            ->paginate(20);
+
+        return [
+            'assets' => $assets,
+        ];
     }
 
     public function arrearRpt($debttype, $creditor, $sdate, $edate, $showall)
