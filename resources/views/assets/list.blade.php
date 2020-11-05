@@ -37,7 +37,7 @@
                                             id="assetCate"
                                             name="assetCate"
                                             ng-model="cboAssetCate"
-                                            ng-change="getAssetType();"
+                                            ng-change="getAssetType(cboAssetCate);"
                                             class="form-control select2"
                                             style="width: 100%; font-size: 12px;">
 
@@ -45,7 +45,7 @@
                                         @foreach($cates as $cate)
 
                                             <option value="{{ $cate->cate_id }}">
-                                                {{ $cate->cate_name }}
+                                                {{ $cate->cate_no.'-'.$cate->cate_name }}
                                             </option>
 
                                         @endforeach
@@ -96,7 +96,7 @@
                                 </div><!-- /.form group -->                               
                                 
                                 <div class="form-group">
-                                    <label>คำค้น</label>
+                                    <label>ชื่อครุภัณฑ์</label>
                                     <input
                                         type="text"
                                         id="searchKey"

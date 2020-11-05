@@ -81,9 +81,12 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
         });
     }
 
-    $scope.getAssetType = function () {
-        $http.get(CONFIG.baseUrl+ '/asset-type/get-ajax-all/' +$scope.asset.asset_cate)
+    $scope.getAssetType = function (cateId) {
+        $scope.loading = true;
+
+        $http.get(CONFIG.baseUrl+ '/asset-type/get-ajax-all/' +cateId)
         .then(function(res) {
+            console.log(res);
             $scope.types = res.data.types;
 
             $scope.loading = false;

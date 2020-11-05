@@ -75,7 +75,7 @@
                                         <select id="asset_cate" 
                                                 name="asset_cate"
                                                 ng-model="asset.asset_cate"
-                                                ng-change="getAssetType();"
+                                                ng-change="getAssetType(asset.asset_cate);"
                                                 class="form-control select2" 
                                                 style="width: 100%; font-size: 12px;"
                                                 tabindex="2" required>

@@ -59,7 +59,7 @@ class AssetController extends Controller
     {
     	return view('assets.list', [
             "suppliers" => Supplier::all(),
-            "cates"     => AssetCategory::all(),
+            "cates"     => AssetCategory::orderBy('cate_no')->get(),
             "types"     => AssetType::all(),
             "statuses"    => $this->status
     	]);
@@ -111,7 +111,7 @@ class AssetController extends Controller
     public function add()
     {
     	return view('assets.add', [
-            "cates"     => AssetCategory::all(),
+            "cates"     => AssetCategory::orderBy('cate_no')->get(),
             "types"     => AssetType::all(),
             "units"     => AssetUnit::all(),
             "budgets"   => BudgetType::all(),
