@@ -34,7 +34,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     
-                                    <div class="form-group" ng-class="{ 'has-error': frmNewAsset.asset_no.$error.required }">
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'asset_no')}">
                                         <label>เลขพัสดุ :</label>
                                         <input  type="text" 
                                                 id="asset_no" .
@@ -42,12 +42,11 @@
                                                 ng-model="asset.asset_no" 
                                                 class="form-control"
                                                 tabindex="4" required>
-                                        <div class="help-block" ng-show="frmNewAsset.asset_no.$error.required">
-                                            กรุณาระบุเลขพัสดุ
-                                        </div>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'asset_no')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'asset_no')">กรุณาระบุเลขพัสดุ</span>
                                     </div>
 
-                                    <div class="form-group" ng-class="{ 'has-error': frmNewAsset.asset_name.$error.required }">
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'asset_name')}">
                                         <label>ชื่อครุภัณฑ์ :</label>
                                         <input  type="text" 
                                                 id="asset_name" 
@@ -55,12 +54,11 @@
                                                 ng-model="asset.asset_name" 
                                                 class="form-control"
                                                 tabindex="6" required>
-                                        <div class="help-block" ng-show="frmNewAsset.asset_name.$error.required">
-                                            กรุณาระบุชื่อครุภัณฑ์
-                                        </div>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'asset_name')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'asset_name')">กรุณาระบุชื่อครุภัณฑ์</span>
                                     </div>
 
-                                    <div class="form-group" ng-class="{ 'has-error': frmNewAsset.amount.$error.required }">
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'amount')}">
                                         <label>จำนวน :</label>
                                         <input  type="text" 
                                                 id="amount" 
@@ -68,12 +66,11 @@
                                                 ng-model="asset.amount" 
                                                 class="form-control"
                                                 tabindex="8" required>
-                                        <div class="help-block" ng-show="frmNewAsset.amount.$error.required">
-                                            กรุณาระบุจำนวน
-                                        </div>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'amount')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'amount')">กรุณาระบุจำนวน</span>
                                     </div>
 
-                                    <div class="form-group" ng-class="{ 'has-error': frmNewAsset.asset_cate.$error.required }">
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'asset_cate')}">
                                         <label>หมวดครุภัณฑ์ :</label>
                                         <select id="asset_cate" 
                                                 name="asset_cate"
@@ -93,12 +90,11 @@
                                             @endforeach
                                                 
                                         </select>
-                                        <div class="help-block" ng-show="frmNewAsset.asset_cate.$error.required">
-                                            กรุณาเลือกหมวดครุภัณฑ์
-                                        </div>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'asset_cate')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'asset_cate')">กรุณาเลือกหมวดครุภัณฑ์</span>
                                     </div>
 
-                                    <div class="form-group" ng-class="{ 'has-error': frmNewAsset.budget_type.$error.required }">
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'budget_type')}">
                                         <label>ประเภทเงิน :</label>
                                         <select id="budget_type" 
                                                 name="budget_type"
@@ -117,12 +113,11 @@
                                             @endforeach
                                                 
                                         </select>
-                                        <div class="help-block" ng-show="frmNewAsset.budget_type.$error.required">
-                                            กรุณาเลือกหมวดครุภัณฑ์
-                                        </div>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'budget_type')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'budget_type')">ประเภทเงิน</span>
                                     </div>
 
-                                    <div class="form-group" ng-class="{ 'has-error': frmNewAsset.reg_no.$error.required }">
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'reg_no')}">
                                         <label>เลขทะเบียน :</label>
                                         <input  type="text" 
                                                 id="reg_no" 
@@ -131,12 +126,11 @@
                                                 class="form-control"
                                                 pattern="[0-9]{4}"
                                                 tabindex="16">
-                                        <div class="help-block" ng-show="frmNewAsset.reg_no.$error.required">
-                                            กรุณาระบุเลขทะเบียน
-                                        </div>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'reg_no')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'reg_no')">กรุณาระบุเลขทะเบียน</span>
                                     </div>
 
-                                    <div class="form-group" ng-class="{ 'has-error': frmNewAsset.depart.$error.required }">
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'depart')}">
                                         <label>หน่วยงาน :</label>
                                         <select id="depart" 
                                                 name="depart"
@@ -155,17 +149,16 @@
                                             @endforeach
                                                 
                                         </select>
-                                        <div class="help-block" ng-show="frmNewAsset.depart.$error.required">
-                                            กรุณาเลือกหหน่วยงาน
-                                        </div>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'depart')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'depart')">กรุณาเลือกหหน่วยงาน</span>
                                     </div>
 
                                 </div><!-- /.col -->
 
                                 <div class="col-md-6">
 
-                                    <div class="form-group" ng-class="{ 'has-error': frmNewAsset.date_in.$error.required }">
-                                        <label>วันที่รับ :</label>
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'date_in')}">
+                                        <label>วันที่รับเข้าระบบ :</label>
 
                                         <div class="input-group">
                                             <div class="input-group-addon">
@@ -177,13 +170,12 @@
                                                     ng-model="asset.date_in" 
                                                     class="form-control pull-right"
                                                     tabindex="1" required>
-                                        </div><!-- /.input group -->
-                                        <div class="help-block" ng-show="frmNewAsset.date_in.$error.required">
-                                            กรุณาเลือกวันที่ลงบัญชี
                                         </div>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'date_in')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'date_in')">กรุณาเลือกวันที่รับเข้าระบบ</span>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'unit_price')}">
                                         <label>ราคาหน่วยละ :</label>
                                         <input  type="text" 
                                                 id="unit_price" 
@@ -191,9 +183,11 @@
                                                 ng-model="asset.unit_price" 
                                                 class="form-control"
                                                 tabindex="3">
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'unit_price')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'unit_price')">กรุณาระบุราคาหน่วยละ</span>
                                     </div>
 
-                                    <div class="form-group" ng-class="{ 'has-error': frmNewAsset.unit.$error.required }">
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'unit')}">
                                         <label>หน่วยนับ :</label>
                                         <select id="unit" 
                                                 name="unit"
@@ -211,13 +205,12 @@
 
                                             @endforeach
                                                 
-                                        </select>                                        
-                                        <div class="help-block" ng-show="frmNewAsset.unit.$error.required">
-                                            กรุณาเลือกหน่วยนับ
-                                        </div>
+                                        </select>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'unit')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'unit')">กรุณาเลือกหน่วยนับ</span>
                                     </div>                
 
-                                    <div class="form-group" ng-class="{ 'has-error': frmNewAsset.asset_type.$error.required }">
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'asset_type')}">
                                         <label>ชนิดครุภัณฑ์ :</label>
                                         <select id="asset_type" 
                                                 name="asset_type"
@@ -230,16 +223,15 @@
                                                 @{{ type.type_name }}
                                             </option>
                                         </select>
-                                        <div class="help-block" ng-show="frmNewAsset.asset_type.$error.required">
-                                            กรุณาเลือกชนิดครุภัณฑ์
-                                        </div>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'asset_type')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'asset_type')">กรุณาเลือกชนิดครุภัณฑ์</span>
                                     </div>
 
-                                    <div class="form-group" ng-class="{ 'has-error': frmNewAsset.method.$error.required }">
-                                        <label>การได้มา :</label>
-                                        <select id="method" 
-                                                name="method"
-                                                ng-model="asset.method" 
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'purchased_method')}">
+                                        <label>ประเภทการได้มา :</label>
+                                        <select id="purchased_method" 
+                                                name="purchased_method"
+                                                ng-model="asset.purchased_method" 
                                                 class="form-control select2" 
                                                 style="width: 100%; font-size: 12px;"
                                                 tabindex="2" required>
@@ -254,12 +246,11 @@
                                             @endforeach
                                                 
                                         </select>
-                                        <div class="help-block" ng-show="frmNewAsset.method.$error.required">
-                                            กรุณาเลือกหมวดครุภัณฑ์
-                                        </div>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'purchased_method')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'purchased_method')">กรุณาเลือกประเภทการได้มา</span>
                                     </div>
 
-                                    <div class="form-group" ng-class="{ 'has-error': frmNewAsset.year.$error.required || frmNewAsset.year.$error.pattern }">
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'year')}">
                                         <label>ปีงบประมาณ (พ.ศ.) :</label>
                                         <input  type="text" 
                                                 id="year" 
@@ -268,12 +259,11 @@
                                                 class="form-control"
                                                 pattern="[0-9]{4}"
                                                 tabindex="16" required>
-                                        <div class="help-block" ng-show="frmNewAsset.year.$error.required">
-                                            กรุณาระบุปีงบประมาณ
-                                        </div>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'year')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'year')">กรุณาระบุปีงบประมาณ</span>
                                     </div>
 
-                                    <div class="form-group" ng-class="{ 'has-error': frmNewAsset.supplier.$error.required }">
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'supplier')}">
                                         <label class="control-label">ผู้จัดจำหน่าย :</label>
                                         <select id="supplier" 
                                                 name="supplier"
@@ -292,9 +282,8 @@
                                             @endforeach
                                                 
                                         </select>
-                                        <div class="help-block" ng-show="frmNewAsset.supplier.$error.required">
-                                            กรุณาเลือกผู้จัดจำหน่าย
-                                        </div>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'supplier')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'supplier')">กรุณาเลือกผู้จัดจำหน่าย</span>
                                     </div>     
                                     
                                 </div><!-- /.col -->
@@ -335,7 +324,7 @@
                             <div class="tab-content clearfix">
                                 <div class="tab-pane active" id="1a" style="padding: 10px;">
                                     <div class="col-md-12">       
-                                        <div class="form-group" ng-class="{ 'has-error': frmNewAsset.doc_type.$error.required }">
+                                        <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'doc_type')}">
                                             <label class="control-label">ประเภทหลักฐาน :</label>
                                             <select id="doc_type" 
                                                     name="doc_type"
@@ -354,14 +343,13 @@
                                                 @endforeach
                                                     
                                             </select>
-                                            <div class="help-block" ng-show="frmNewAsset.doc_type.$error.required">
-                                                กรุณาเลือกประเภทหลักฐาน
-                                            </div>
+                                            <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'doc_type')"></span>
+                                            <span class="help-block" ng-show="checkValidate(asset, 'doc_type')">กรุณาเลือกประเภทหลักฐาน</span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <div class="form-group" ng-class="{ 'has-error': frmNewAsset.doc_no.$error.required }">
+                                        <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'doc_no')}">
                                             <label>เลขที่เอกสาร :</label>
                                             <input  type="text" 
                                                     id="doc_no" 
@@ -369,14 +357,13 @@
                                                     ng-model="asset.doc_no"
                                                     class="form-control"
                                                     tabindex="12" required>
-                                            <div class="help-block" ng-show="frmNewAsset.doc_no.$error.required">
-                                                กรุณาระบุเลขที่เอกสาร
-                                            </div>
+                                            <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'doc_no')"></span>
+                                            <span class="help-block" ng-show="checkValidate(asset, 'doc_no')">กรุณาระบุเลขที่เอกสาร</span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <div class="form-group" ng-class="{ 'has-error': frmNewAsset.doc_date.$error.required }">
+                                        <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'doc_date')}">
                                             <label>ลงวันที่ :</label>
                                             <div class="input-group">
                                                 <div class="input-group-addon">
@@ -388,10 +375,9 @@
                                                         ng-model="asset.doc_date" 
                                                         class="form-control pull-right"
                                                         tabindex="5" required>
-                                            </div><!-- /.input group -->
-                                            <div class="help-block" ng-show="frmNewAsset.doc_date.$error.pattern">
-                                                กรุณาเลือกวันที่หลักฐานการได้มา
                                             </div>
+                                            <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'doc_date')"></span>
+                                            <span class="help-block" ng-show="checkValidate(asset, 'doc_date')">กรุณาเลือกวันที่หลักฐานการได้มา</span>
                                         </div>
                                     </div>
 
@@ -401,7 +387,10 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer clearfix">
-                            <button ng-click="store($event, frmNewAsset)" class="btn btn-success pull-right">
+                            <button
+                                ng-click="formValidate($event, '/asset/validate', type, '#frmNewAsset')"
+                                class="btn btn-success pull-right"
+                            >
                                 บันทึก
                             </button>
                         </div><!-- /.box-footer -->

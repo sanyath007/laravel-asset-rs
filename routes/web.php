@@ -62,6 +62,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::delete('asset/delete/{debtId}', 'AssetController@delete');
     Route::get('asset/discharge', 'AssetController@discharge');
     Route::post('asset/discharge', 'AssetController@doDischarge');
+    Route::post('/asset/validate', 'AssetController@formValidate');
 
     /** Asset Type */
     Route::get('asset-type/list', 'AssetTypeController@list');

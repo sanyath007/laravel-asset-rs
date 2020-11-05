@@ -107,8 +107,8 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer">
-                            <a ng-click="add($event)" class="btn btn-primary">
-                                เพิ่มรายการ
+                            <a href="{{ url('/asset/add') }}" class="btn btn-primary">
+                                เพิ่มครุภัณฑ์
                             </a>
                         </div>
                     </form>

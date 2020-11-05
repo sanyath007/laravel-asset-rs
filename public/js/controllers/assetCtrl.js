@@ -44,7 +44,7 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
             amount: '',
             unit: '',
             unit_price: '',
-            method: '',
+            purchased_method: '',
             image: '',
             reg_no: '',
             budget_type: '',
@@ -183,16 +183,6 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
         $scope.debt.debt_total = (parseFloat(amount) + parseFloat($scope.debt.debt_vat)).toFixed(2);
     }
 
-    $scope.add = function(event) {
-        event.preventDefault();
-
-        if(creditor === '') {
-            toaster.pop('warning', "", "คุณยังไม่ได้เลือก... !!!");
-        } else {
-            window.location.href = CONFIG.baseUrl + '/asset/add';
-        }
-    }
-
     $scope.store = function(event, form) {
         console.log(event);
         event.preventDefault();
@@ -205,6 +195,9 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
             /** Convert thai date to db date. */
             $scope.asset.date_in = StringFormatService.convToDbDate($scope.asset.date_in);
             $scope.asset.doc_date = StringFormatService.convToDbDate($scope.asset.doc_date);
+            /** Get user id */
+            $scope.asset.created_by = $("#user").val();
+            $scope.asset.updated_by = $("#user").val();
             console.log($scope.asset);
 
             $http.post(CONFIG.baseUrl + '/asset/store', $scope.asset)
@@ -226,36 +219,31 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
         $http.get(CONFIG.baseUrl + '/asset/get-asset/' +assetId)
         .then(function(res) {
             console.log(res);
-            $scope.debt = res.data.asset;
+            $scope.asset = res.data.asset;
 
             /** Convert db date to thai date. */
-            $scope.debt.debt_date = StringFormatService.convFromDbDate($scope.debt.debt_date);
-            $scope.debt.debt_doc_recdate = StringFormatService.convFromDbDate($scope.debt.debt_doc_recdate);
-            $scope.debt.deliver_date = StringFormatService.convFromDbDate($scope.debt.deliver_date);
-            $scope.debt.debt_doc_date = ($scope.debt.debt_doc_date) ? StringFormatService.convFromDbDate($scope.debt.debt_doc_date) : '';
-            $scope.debt.doc_receive = StringFormatService.convFromDbDate($scope.debt.doc_receive);
+            $scope.asset.date_in = StringFormatService.convFromDbDate($scope.asset.date_in);
+            $scope.asset.doc_date = StringFormatService.convFromDbDate($scope.asset.doc_date);
         }, function(err) {
             console.log(err);
         });
     }
 
-    $scope.edit = function(debtId) {
-        console.log(debtId);
+    $scope.edit = function(assetId) {
+        console.log(assetId);
 
         /** Show edit form modal dialog */
         // $('#dlgEditForm').modal('show');
-
-        var creditor = $("#debtType").val();
 
         if(creditor === '') {
             console.log("You doesn't select creditor !!!");
             toaster.pop('warning', "", "คุณยังไม่ได้เลือกเจ้าหนี้ !!!");
         } else {
-            window.location.href = CONFIG.BASE_URL + '/debt/edit/' + creditor + '/' + debtId;
+            window.location.href = CONFIG.BASE_URL + '/asset/edit/' + assetId;
         }
     };
 
-    $scope.update = function(event, form, debtId) {
+    $scope.update = function(event, form, assetId) {
         console.log(debtId);
         event.preventDefault();
 
@@ -264,21 +252,15 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
             return;
         } else {
             /** Convert thai date to db date. */
-            $scope.debt.debt_date = StringFormatService.convToDbDate($scope.debt.debt_date);
-            $scope.debt.debt_doc_recdate = StringFormatService.convToDbDate($scope.debt.debt_doc_recdate);
-            $scope.debt.deliver_date = StringFormatService.convToDbDate($scope.debt.deliver_date);
-            $scope.debt.debt_doc_date = ($scope.debt.debt_doc_date) ? StringFormatService.convToDbDate($scope.debt.debt_doc_date) : '';
-            $scope.debt.doc_receive = StringFormatService.convToDbDate($scope.debt.doc_receive);
-            /** Get supplier data */
-            $scope.debt.supplier_id = $("#supplier_id").val();
-            $scope.debt.supplier_name = $("#supplier_name").val();
+            $scope.asset.date_in = StringFormatService.convToDbDate($scope.asset.date_in);
+            $scope.asset.doc_date = StringFormatService.convToDbDate($scope.asset.doc_date);
             /** Get user id */
-            $scope.debt.debt_creby = $("#user").val();
-            $scope.debt.debt_userid = $("#user").val();
-            console.log($scope.debt);
+            $scope.asset.created_by = $("#user").val();
+            $scope.asset.updated_by = $("#user").val();
+            console.log($scope.asset);
 
-            if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + debtId + " ใช่หรือไม่?")) {
-                $http.put(CONFIG.BASE_URL + '/debt/update/', $scope.debt)
+            if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + assetId + " ใช่หรือไม่?")) {
+                $http.put(CONFIG.BASE_URL + '/asset/update/', $scope.asset)
                 .then(function(res) {
                     console.log(res);
                 }, function(err) {

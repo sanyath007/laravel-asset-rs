@@ -23,6 +23,38 @@ class AssetController extends Controller
         '4' => 'จำหน่าย',
     ];
 
+    public function formValidate (Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'asset_no' => 'required',
+            'asset_name' => 'required',
+            'asset_type' => 'required',
+            'amount' => 'required',
+            'unit' => 'required',
+            'unit_price' => 'required',
+            'purchased_method' => 'required',
+            'budget_type' => 'required',
+            'year' => 'required',
+            'supplier' => 'required',
+            'doc_type' => 'required',
+            'doc_no' => 'required',
+            'doc_date' => 'required',
+            'date_in' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return [
+                'success' => 0,
+                'errors' => $validator->getMessageBag()->toArray(),
+            ];
+        } else {
+            return [
+                'success' => 1,
+                'errors' => $validator->getMessageBag()->toArray(),
+            ];
+        }
+    }
+
     public function list()
     {
     	return view('assets.list', [
@@ -102,7 +134,7 @@ class AssetController extends Controller
         $asset->amount = $req['amount'];
         $asset->unit = $req['unit'];
         $asset->unit_price = $req['unit_price'];
-        $asset->purchased_method = $req['method'];
+        $asset->purchased_method = $req['purchased_method'];
         $asset->reg_no = $req['reg_no'];
         $asset->budget_type = $req['budget_type'];
         $asset->year = $req['year'];
