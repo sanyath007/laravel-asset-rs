@@ -4,17 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\AssetType;
-use App\Models\AssetCategory;
+use App\Models\DeprecType;
 
-class AssetTypeController extends Controller
+class DeprecTypeController extends Controller
 {
     public function formValidate (Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'type_no' => 'required',
-            'type_name' => 'required',
-            'cate_id' => 'required'
+            'deprec_type_no' => 'required',
+            'deprec_type_name' => 'required',
+            'deprec_life_y' => 'required',
+            'deprec_rate_y' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -38,10 +38,10 @@ class AssetTypeController extends Controller
     public function search($searchKey)
     {
         if($searchKey == '0') {
-            $types = AssetType::with('cate')->paginate(20);
+            $types = DeprecType::with('cates')->paginate(20);
         } else {
-            $types = AssetType::where('type_name', 'like', '%'.$searchKey.'%')
-                        ->with('cate')
+            $types = DeprecType::where('type_name', 'like', '%'.$searchKey.'%')
+                        ->with('cates')
                         ->paginate(20);
         }
 
@@ -52,7 +52,7 @@ class AssetTypeController extends Controller
 
     public function getAjexAll($cateId)
     {
-        $types = AssetType::where('cate_id', '=', $cateId)->get();
+        $types = DeprecType::where('cate_id', '=', $cateId)->get();
 
         return [
             'types' => $types,
@@ -61,9 +61,9 @@ class AssetTypeController extends Controller
 
     private function generateAutoId()
     {
-        $cate = \DB::table('asset_types')
-                        ->select('type_no')
-                        ->orderBy('type_no', 'DESC')
+        $cate = \DB::table('deprec_types')
+                        ->select('deprec_type_no')
+                        ->orderBy('deprec_type_no', 'DESC')
                         ->first();
 
         $tmpLastNo =  ((int)($type->type_no)) + 1;
@@ -74,18 +74,17 @@ class AssetTypeController extends Controller
 
     public function add()
     {
-    	return view('asset-types.add', [
-            'cates' => AssetCategory::orderBy('cate_no')->get(),
-    	]);
+    	return view('asset-types.add');
     }
 
     public function store(Request $req)
     {
-        $type = new AssetType();
+        $type = new DeprecType();
         // $type->type_id = $this->generateAutoId();
-        $type->type_no = $req['type_no'];
-        $type->type_name = $req['type_name'];
-        $type->cate_id = $req['cate_id'];
+        $type->deprec_type_no = $req['deprec_type_no'];
+        $type->deprec_type_name = $req['deprec_type_name'];
+        $type->deprec_life_y = $req['deprec_life_y'];
+        $type->deprec_rate_y = $req['deprec_rate_y'];
 
         if($type->save()) {
             return [
@@ -103,23 +102,23 @@ class AssetTypeController extends Controller
     public function getById($typeId)
     {
         return [
-            'type' => AssetType::find($typeId),
+            'type' => DeprecType::find($typeId),
         ];
     }
 
     public function edit($typeId)
     {
         return view('asset-types.edit', [
-            'type' => AssetType::find($typeId),
-            'cates' => AssetCategory::orderBy('cate_no')->get(),
+            'type' => DeprecType::find($typeId)
         ]);
     }
 
     public function update(Request $req)
     {
-        $type = AssetType::find($req['type_id']);
-        $type->type_name = $req['type_name'];
-        $type->cate_id = $req['cate_id'];
+        $type = DeprecType::find($req['deprec_type_id']);
+        $type->deprec_type_name = $req['deprec_type_name'];
+        $type->deprec_life_y = $req['deprec_life_y'];
+        $type->deprec_rate_y = $req['deprec_rate_y'];
 
         if($type->save()) {
             return [
@@ -136,7 +135,7 @@ class AssetTypeController extends Controller
 
     public function delete($typeId)
     {
-        $type = AssetType::find($typeId);
+        $type = DeprecType::find($typeId);
 
         if($type->delete()) {
             return [

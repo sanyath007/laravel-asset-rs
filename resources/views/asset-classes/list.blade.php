@@ -5,18 +5,18 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายการชนิดครุภัณฑ์
+            รายการหมวดครุภัณฑ์
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายการชนิดครุภัณฑ์</li>
+            <li class="breadcrumb-item active">รายการหมวดครุภัณฑ์</li>
         </ol>
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="assetTypeCtrl" ng-init="getData()">
+    <section class="content" ng-controller="assetCateCtrl" ng-init="getData()">
 
         <div class="row">
             <div class="col-md-12">
@@ -30,7 +30,7 @@
                         <div class="box-body">
                             <div class="col-md-12">                                
                                 <div class="form-group">
-                                    <label>ค้นหาชื่อชนิดครุภัณฑ์</label>
+                                    <label>ค้นหาชื่อหมวดครุภัณฑ์</label>
                                     <input type="text" id="searchKey" ng-keyup="getData($event)" class="form-control">
                                 </div><!-- /.form group -->
                             </div>
@@ -38,7 +38,7 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer">
-                            <a href="{{ url('/asset-type/add') }}" class="btn btn-primary"> เพิ่มชนิดครุภัณฑ์</a>
+                            <a href="{{ url('/asset-cate/add') }}" class="btn btn-primary"> เพิ่มหมวดครุภัณฑ์</a>
                         </div>
                     </form>
                 </div><!-- /.box -->
@@ -46,7 +46,7 @@
                 <div class="box">
 
                     <div class="box-header with-border">
-                      <h3 class="box-title">รายการชนิดครุภัณฑ์</h3>
+                      <h3 class="box-title">รายการหมวดครุภัณฑ์</h3>
                     </div><!-- /.box-header -->
 
                     <div class="box-body">
@@ -55,25 +55,23 @@
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>
                                     <th style="width: 10%; text-align: center;">เลขรหัส</th>
-                                    <th style="text-align: left;">ชื่อชนิดครุภัณฑ์</th>
-                                    <th style="width: 30%; text-align: left;">หมวดครุภัณฑ์</th>
+                                    <th style="text-align: left;">ชื่อหมวดครุภัณฑ์</th>
                                     <th style="width: 8%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, type) in types">
+                                <tr ng-repeat="(index, cate) in cates">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ type.type_no }}</td>
-                                    <td style="text-align: left;">@{{ type.type_name }}</td>
-                                    <td style="text-align: left;">@{{ type.cate.cate_no + '-' +type.cate.cate_name }}</td>
+                                    <td style="text-align: center;">@{{ cate.cate_no }}</td>
+                                    <td style="text-align: left;">@{{ cate.cate_name }}</td>
                                     <td style="text-align: center;">
-                                        <a ng-click="edit(type.type_id)" class="btn btn-warning btn-sm">
+                                        <a ng-click="edit(cate.cate_id)" class="btn btn-warning btn-sm">
                                             <i class="fa fa-edit"></i>
                                         </a>
 
                                         @if(Auth::user()->person_id == '1300200009261')
 
-                                            <a ng-click="delete(type.type_id)" class="btn btn-danger btn-sm">
+                                            <a ng-click="delete(cate.cate_id)" class="btn btn-danger btn-sm">
                                                 <i class="fa fa-trash"></i>
                                             </a>
                                         

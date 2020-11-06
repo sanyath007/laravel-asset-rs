@@ -1,28 +1,26 @@
-app.controller('assetTypeCtrl', function($scope, $http, toaster, CONFIG, ModalService) {
+app.controller('assetClassCtrl', function($scope, $http, toaster, CONFIG, ModalService) {
 /** ################################################################################## */
     $scope.loading = false;
+    $scope.cates = [];
     $scope.pager = [];
-    $scope.types = [];
-    $scope.type = {
-        type_id: '',
-        type_no: '',
-        type_name: '',
-        life_y: '',
-        deprec_rate_y: '',
+    
+    $scope.cate = {
         cate_id: '',
+        cate_no: '',
+        cate_name: '',
     };
 
     $scope.getData = function(event) {
         console.log(event);
-        $scope.types = [];
+        $scope.cates = [];
         $scope.loading = true;
         
         let searchKey = ($("#searchKey").val() == '') ? 0 : $("#searchKey").val();
-        $http.get(CONFIG.baseUrl+ '/asset-type/search/' +searchKey)
+        $http.get(CONFIG.baseUrl+ '/asset-cate/search/' +searchKey)
         .then(function(res) {
             console.log(res);
-            $scope.types = res.data.types.data;
-            $scope.pager = res.data.types;
+            $scope.cates = res.data.cates.data;
+            $scope.pager = res.data.cates;
 
             $scope.loading = false;
         }, function(err) {
@@ -33,14 +31,14 @@ app.controller('assetTypeCtrl', function($scope, $http, toaster, CONFIG, ModalSe
 
     $scope.getDataWithURL = function(URL) {
         console.log(URL);
-        $scope.types = [];
+        $scope.cates = [];
         $scope.loading = true;
 
     	$http.get(URL)
     	.then(function(res) {
     		console.log(res);
-            $scope.types = res.data.types.data;
-            $scope.pager = res.data.types;
+            $scope.cates = res.data.cates.data;
+            $scope.pager = res.data.cates;
 
             $scope.loading = false;
     	}, function(err) {
@@ -52,7 +50,7 @@ app.controller('assetTypeCtrl', function($scope, $http, toaster, CONFIG, ModalSe
     $scope.add = function(event, form) {
         event.preventDefault();
 
-        $http.post(CONFIG.baseUrl + '/asset-type/store', $scope.type)
+        $http.post(CONFIG.baseUrl + '/asset-cate/store', $scope.cate)
         .then(function(res) {
             console.log(res);
             toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
@@ -64,29 +62,28 @@ app.controller('assetTypeCtrl', function($scope, $http, toaster, CONFIG, ModalSe
         document.getElementById(form).reset();
     }
 
-    $scope.getAssettype = function(typeId) {
-        $http.get(CONFIG.baseUrl + '/asset-type/get-ajax-byid/' +typeId)
+    $scope.getAssettype = function(cateId) {
+        $http.get(CONFIG.baseUrl + '/asset-cate/get-asset-cate/' +cateId)
         .then(function(res) {
             console.log(res);
-            $scope.type = res.data.type;
+            $scope.cate = res.data.cate;
         }, function(err) {
             console.log(err);
         });
     }
 
-    $scope.edit = function(typeId) {
-        console.log(typeId);
+    $scope.edit = function(cateId) {
+        console.log(cateId);
 
-        window.location.href = CONFIG.baseUrl + '/asset-type/edit/' + typeId;
+        window.location.href = CONFIG.baseUrl + '/asset-cate/edit/' + cateId;
     };
 
-    $scope.update = function(event, form) {
+    $scope.update = function(event, form, cateId) {
+        console.log(cateId);
         event.preventDefault();
 
-        if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + $scope.type.type_id + " ใช่หรือไม่?")) {
-            $scope.type.cate_id = $('#cate_id option:selected').val();
-            
-            $http.put(CONFIG.baseUrl + '/asset-type/update/', $scope.type)
+        if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + cateId + " ใช่หรือไม่?")) {
+            $http.put(CONFIG.baseUrl + '/asset-cate/update/', $scope.cate)
             .then(function(res) {
                 console.log(res);
                 toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
@@ -97,11 +94,11 @@ app.controller('assetTypeCtrl', function($scope, $http, toaster, CONFIG, ModalSe
         }
     };
 
-    $scope.delete = function(typeId) {
-        console.log(typeId);
+    $scope.delete = function(cateId) {
+        console.log(cateId);
 
-        if(confirm("คุณต้องลบรายการหนี้เลขที่ " + typeId + " ใช่หรือไม่?")) {
-            $http.delete(CONFIG.baseUrl + '/asset-type/delete/' +typeId)
+        if(confirm("คุณต้องลบรายการหนี้เลขที่ " + cateId + " ใช่หรือไม่?")) {
+            $http.delete(CONFIG.baseUrl + '/asset-cate/delete/' +cateId)
             .then(function(res) {
                 console.log(res);
                 toaster.pop('success', "", 'ลบข้อมูลเรียบร้อยแล้ว !!!');

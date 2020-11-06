@@ -8,6 +8,7 @@ use App\Models\AssetCategory;
 use App\Models\AssetType;
 use App\Models\AssetUnit;
 use App\Models\BudgetType;
+use App\Models\DeprecType;
 use App\Models\PurchasedMethod;
 use App\Models\DocumentType;
 use App\Models\Supplier;
@@ -75,6 +76,7 @@ class AssetController extends Controller
         if($conditions == '0') {
             $assets = Asset::with('assetType')
                         ->with('supplier')
+                        ->with('deprecType')
                         ->with('budgetType')
                         ->with('docType')
                         ->with('purchasedMethod')
@@ -83,6 +85,7 @@ class AssetController extends Controller
             $assets = Asset::where($conditions)
                         ->with('assetType')
                         ->with('supplier')
+                        ->with('deprecType')
                         ->with('budgetType')
                         ->with('docType')
                         ->with('purchasedMethod')
@@ -113,6 +116,7 @@ class AssetController extends Controller
     	return view('assets.add', [
             "cates"     => AssetCategory::orderBy('cate_no')->get(),
             "types"     => AssetType::all(),
+            "deprecs"     => DeprecType::all(),
             "units"     => AssetUnit::all(),
             "budgets"   => BudgetType::all(),
             "docs"   => DocumentType::all(),
@@ -172,9 +176,16 @@ class AssetController extends Controller
     public function edit($creditor, $debtId)
     {
         return view('assets.edit', [
-            "creditor" => Creditor::where('supplier_id', '=', $creditor)->first(),
-            'debt' => Debt::find($debtId),
-            "debttypes" => DebtType::all(),
+            "cates"     => AssetCategory::orderBy('cate_no')->get(),
+            "types"     => AssetType::all(),
+            "deprecs"   => DeprecType::all(),
+            "units"     => AssetUnit::all(),
+            "budgets"   => BudgetType::all(),
+            "docs"      => DocumentType::all(),
+            "methods"   => PurchasedMethod::all(),
+            "suppliers" => Supplier::all(),
+            "departs"   => Department::all(),
+            "statuses"  => $this->status
         ]);
     }
 

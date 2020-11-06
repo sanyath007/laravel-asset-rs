@@ -21,6 +21,11 @@ class Asset extends Model
         return $this->belongsTo('App\Models\AssetType', 'asset_type', 'type_id');
     }
   
+    public function deprecType()
+    {
+        return $this->belongsTo('App\Models\DeprecType', 'deprec_type', 'deprec_type_id');
+    }
+  
     public function budgetType()
     {
         return $this->belongsTo('App\Models\BudgetType', 'budget_type', 'budget_type_id');

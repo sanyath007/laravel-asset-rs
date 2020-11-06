@@ -27,7 +27,7 @@ app.controller('depreciationCtrl', function(CONFIG, $scope, $http, toaster, Moda
             $scope.assets.map(function(asset) {
                 asset['age_y'] = moment().diff(asset.date_in, 'years');
                 asset['age_m'] = moment().diff(asset.date_in, 'months')-(asset.age_y*12);
-                asset['deprec_y'] = (asset.unit_price/asset.asset_type.age_y).toFixed(2);
+                asset['deprec_y'] = (asset.unit_price/asset.deprec_type.deprec_life_y).toFixed(2);
                 asset['deprec_collect'] = ((asset.deprec_y*asset.age_y)+(asset.deprec_y*asset.age_m/12)).toFixed(2);
                 asset['deprec_net'] = (asset.unit_price/asset.deprec_collect).toFixed(2);
             });

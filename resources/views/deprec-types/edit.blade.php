@@ -79,6 +79,30 @@
                                     <span class="help-block" ng-show="checkValidate(type, 'type_name')">กรุณากรอกชื่อชนิดครุภัณฑ์ก่อน</span>
                                 </div>
 
+                                <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(type, 'life_y')}">
+                                    <label class="control-label">อายุการใช้งาน (ปี) :</label>
+                                    <input
+                                        type="text"
+                                        id="life_y"
+                                        name="life_y"
+                                        ng-model="type.life_y"
+                                        class="form-control">
+                                    <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(type, 'life_y')"></span>
+                                    <span class="help-block" ng-show="checkValidate(type, 'life_y')">กรุณาระบุอายุการใช้งานก่อน</span>
+                                </div>
+
+                                <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(type, 'deprec_rate_y')}">
+                                    <label class="control-label">อัตรค่าเสื่อม/ปี (ร้อยละ) :</label>
+                                    <input
+                                        type="text"
+                                        id="deprec_rate_y"
+                                        name="deprec_rate_y"
+                                        ng-model="type.deprec_rate_y"
+                                        class="form-control">
+                                    <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(type, 'deprec_rate_y')"></span>
+                                    <span class="help-block" ng-show="checkValidate(type, 'deprec_rate_y')">กรุณาระบุอัตรค่าเสื่อม/ปีก่อน</span>
+                                </div>
+
                             </div><!-- /.col -->
                         </div><!-- /.box-body -->
                   

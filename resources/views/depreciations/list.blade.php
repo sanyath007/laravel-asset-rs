@@ -114,7 +114,7 @@
                                     <td style="text-align: left;">@{{ asset.asset_name }}</td>
                                     <td style="text-align: right;">@{{ asset.unit_price | currency:"":0 }}</td>
                                     <td style="text-align: center;">@{{ asset.date_in | thdate }}</td>
-                                    <td style="text-align: center;">@{{ asset.asset_type.age_y }}</td>
+                                    <td style="text-align: center;">@{{ asset.deprec_type.deprec_life_y }}</td>
                                     <td style="text-align: center;">@{{ asset.age_y }}</td>
                                     <td style="text-align: center;">@{{ asset.age_m }}</td>
                                     <td style="text-align: right;">@{{ asset.deprec_y | currency:"":0 }}</td>             

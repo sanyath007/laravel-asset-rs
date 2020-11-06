@@ -4,17 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\AssetType;
-use App\Models\AssetCategory;
+use App\Models\AssetGroup;
 
-class AssetTypeController extends Controller
+class AssetGroupController extends Controller
 {
     public function formValidate (Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'type_no' => 'required',
-            'type_name' => 'required',
-            'cate_id' => 'required'
+            'group_no' => 'required',
+            'group_name' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -32,41 +30,30 @@ class AssetTypeController extends Controller
 
     public function list()
     {
-    	return view('asset-types.list');
+    	return view('asset-groups.list');
     }
 
     public function search($searchKey)
     {
         if($searchKey == '0') {
-            $types = AssetType::with('cate')->paginate(20);
+            $cates = AssetGroup::paginate(20);
         } else {
-            $types = AssetType::where('type_name', 'like', '%'.$searchKey.'%')
-                        ->with('cate')
-                        ->paginate(20);
+            $cates = AssetGroup::where('group_name', 'like', '%'.$searchKey.'%')->paginate(20);
         }
 
         return [
-            'types' => $types,
-        ];
-    }
-
-    public function getAjexAll($cateId)
-    {
-        $types = AssetType::where('cate_id', '=', $cateId)->get();
-
-        return [
-            'types' => $types,
+            'cates' => $cates,
         ];
     }
 
     private function generateAutoId()
     {
-        $cate = \DB::table('asset_types')
-                        ->select('type_no')
-                        ->orderBy('type_no', 'DESC')
+        $cate = \DB::table('asset_cates')
+                        ->select('group_no')
+                        ->orderBy('group_no', 'DESC')
                         ->first();
 
-        $tmpLastNo =  ((int)($type->type_no)) + 1;
+        $tmpLastNo =  ((int)($cate->group_no)) + 1;
         $lastNo = sprintf("%'.05d", $tmpLastNo);
 
         return $lastId;
@@ -74,20 +61,19 @@ class AssetTypeController extends Controller
 
     public function add()
     {
-    	return view('asset-types.add', [
-            'cates' => AssetCategory::orderBy('cate_no')->get(),
+    	return view('asset-groups.add', [
+            'cates' => AssetGroup::all(),
     	]);
     }
 
     public function store(Request $req)
     {
-        $type = new AssetType();
-        // $type->type_id = $this->generateAutoId();
-        $type->type_no = $req['type_no'];
-        $type->type_name = $req['type_name'];
-        $type->cate_id = $req['cate_id'];
+        $cate = new AssetGroup();
+        // $cate->group_id = $this->generateAutoId();
+        $cate->group_no = $req['group_no'];
+        $cate->group_name = $req['group_name'];
 
-        if($type->save()) {
+        if($cate->save()) {
             return [
                 "status" => "success",
                 "message" => "Insert success.",
@@ -100,26 +86,26 @@ class AssetTypeController extends Controller
         }
     }
 
-    public function getById($typeId)
+    public function getById($groupId)
     {
         return [
-            'type' => AssetType::find($typeId),
+            'cate' => AssetGroup::find($groupId),
         ];
     }
 
-    public function edit($typeId)
+    public function edit($groupId)
     {
-        return view('asset-types.edit', [
-            'type' => AssetType::find($typeId),
-            'cates' => AssetCategory::orderBy('cate_no')->get(),
+        return view('asset-groups.edit', [
+            'type' => AssetGroup::find($groupId)
         ]);
     }
 
     public function update(Request $req)
     {
-        $type = AssetType::find($req['type_id']);
-        $type->type_name = $req['type_name'];
-        $type->cate_id = $req['cate_id'];
+        $type = AssetGroup::find($req['group_id']);
+
+        $type->group_id = $req['group_id'];
+        $type->group_name = $req['group_name'];
 
         if($type->save()) {
             return [
@@ -134,9 +120,9 @@ class AssetTypeController extends Controller
         }
     }
 
-    public function delete($typeId)
+    public function delete($groupId)
     {
-        $type = AssetType::find($typeId);
+        $type = AssetGroup::find($groupId);
 
         if($type->delete()) {
             return [

@@ -56,6 +56,8 @@
                                     <th style="width: 3%; text-align: center;">#</th>
                                     <th style="width: 10%; text-align: center;">เลขรหัส</th>
                                     <th style="text-align: left;">ชื่อชนิดครุภัณฑ์</th>
+                                    <th style="width: 10%; text-align: left;">อายุการใช้งาน (ปี)</th>
+                                    <th style="width: 10%; text-align: left;">อัตรค่าเสื่อม/ปี (%)</th>
                                     <th style="width: 30%; text-align: left;">หมวดครุภัณฑ์</th>
                                     <th style="width: 8%; text-align: center;">Actions</th>
                                 </tr>
@@ -65,7 +67,9 @@
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
                                     <td style="text-align: center;">@{{ type.type_no }}</td>
                                     <td style="text-align: left;">@{{ type.type_name }}</td>
-                                    <td style="text-align: left;">@{{ type.cate.cate_no + '-' +type.cate.cate_name }}</td>
+                                    <td style="text-align: center;">@{{ type.life_y }}</td>
+                                    <td style="text-align: center;">@{{ type.deprec_rate_y }}</td>
+                                    <td style="text-align: left;">@{{ type.cates.cate_no + '-' +type.cates.cate_name }}</td>
                                     <td style="text-align: center;">
                                         <a ng-click="edit(type.type_id)" class="btn btn-warning btn-sm">
                                             <i class="fa fa-edit"></i>

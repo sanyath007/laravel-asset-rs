@@ -32,6 +32,7 @@
                         
                         <div class="box-body">
                             <div class="col-md-8">
+
                                 <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(type, 'cate_id')}">
                                     <label class="control-label">หมวดครุภัณฑ์ :</label>
                                     <select id="cate_id"
@@ -78,7 +79,8 @@
                                     <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(type, 'type_name')"></span>
                                     <span class="help-block" ng-show="checkValidate(type, 'type_name')">กรุณากรอกชื่อชนิดครุภัณฑ์ก่อน</span>
                                 </div>
-                            </div>
+
+                            </div><!-- /.col -->
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer clearfix">

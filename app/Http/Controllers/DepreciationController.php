@@ -27,6 +27,7 @@ class DepreciationController extends Controller
         $assets = Asset::whereIn('status', [1, 2, 3])
                             ->with('assetType')
                             ->with('supplier')
+                            ->with('deprecType')
                             ->with('budgetType')
                             ->with('docType')
                             ->with('purchasedMethod')

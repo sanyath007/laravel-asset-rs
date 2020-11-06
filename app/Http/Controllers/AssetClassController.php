@@ -4,17 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\AssetType;
-use App\Models\AssetCategory;
+use App\Models\AssetClass;
 
-class AssetTypeController extends Controller
+class AssetClassController extends Controller
 {
     public function formValidate (Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'type_no' => 'required',
-            'type_name' => 'required',
-            'cate_id' => 'required'
+            'class_no' => 'required',
+            'class_name' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -32,41 +30,30 @@ class AssetTypeController extends Controller
 
     public function list()
     {
-    	return view('asset-types.list');
+    	return view('asset-classes.list');
     }
 
     public function search($searchKey)
     {
         if($searchKey == '0') {
-            $types = AssetType::with('cate')->paginate(20);
+            $cates = AssetClass::paginate(20);
         } else {
-            $types = AssetType::where('type_name', 'like', '%'.$searchKey.'%')
-                        ->with('cate')
-                        ->paginate(20);
+            $cates = AssetClass::where('class_name', 'like', '%'.$searchKey.'%')->paginate(20);
         }
 
         return [
-            'types' => $types,
-        ];
-    }
-
-    public function getAjexAll($cateId)
-    {
-        $types = AssetType::where('cate_id', '=', $cateId)->get();
-
-        return [
-            'types' => $types,
+            'cates' => $cates,
         ];
     }
 
     private function generateAutoId()
     {
-        $cate = \DB::table('asset_types')
-                        ->select('type_no')
-                        ->orderBy('type_no', 'DESC')
+        $cate = \DB::table('asset_cates')
+                        ->select('class_no')
+                        ->orderBy('class_no', 'DESC')
                         ->first();
 
-        $tmpLastNo =  ((int)($type->type_no)) + 1;
+        $tmpLastNo =  ((int)($cate->class_no)) + 1;
         $lastNo = sprintf("%'.05d", $tmpLastNo);
 
         return $lastId;
@@ -74,20 +61,19 @@ class AssetTypeController extends Controller
 
     public function add()
     {
-    	return view('asset-types.add', [
-            'cates' => AssetCategory::orderBy('cate_no')->get(),
+    	return view('asset-classes.add', [
+            'cates' => AssetClass::all(),
     	]);
     }
 
     public function store(Request $req)
     {
-        $type = new AssetType();
-        // $type->type_id = $this->generateAutoId();
-        $type->type_no = $req['type_no'];
-        $type->type_name = $req['type_name'];
-        $type->cate_id = $req['cate_id'];
+        $cate = new AssetClass();
+        // $cate->class_id = $this->generateAutoId();
+        $cate->class_no = $req['class_no'];
+        $cate->class_name = $req['class_name'];
 
-        if($type->save()) {
+        if($cate->save()) {
             return [
                 "status" => "success",
                 "message" => "Insert success.",
@@ -100,26 +86,27 @@ class AssetTypeController extends Controller
         }
     }
 
-    public function getById($typeId)
+    public function getById($classId)
     {
         return [
-            'type' => AssetType::find($typeId),
+            'cate' => AssetClass::find($classId),
         ];
     }
 
-    public function edit($typeId)
+    public function edit($classId)
     {
-        return view('asset-types.edit', [
-            'type' => AssetType::find($typeId),
-            'cates' => AssetCategory::orderBy('cate_no')->get(),
+        return view('asset-classes.edit', [
+            'type' => AssetClass::find($classId),
+            'cates' => \DB::table('asset_categories')->select('*')->get(),
         ]);
     }
 
     public function update(Request $req)
     {
-        $type = AssetType::find($req['type_id']);
-        $type->type_name = $req['type_name'];
-        $type->cate_id = $req['cate_id'];
+        $type = AssetClass::find($req['class_id']);
+
+        $type->class_id = $req['class_id'];
+        $type->class_name = $req['class_name'];
 
         if($type->save()) {
             return [
@@ -134,9 +121,9 @@ class AssetTypeController extends Controller
         }
     }
 
-    public function delete($typeId)
+    public function delete($classId)
     {
-        $type = AssetType::find($typeId);
+        $type = AssetClass::find($classId);
 
         if($type->delete()) {
             return [
