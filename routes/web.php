@@ -127,7 +127,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('deprec-type/list', 'DeprecTypeController@list');
 	Route::get('deprec-type/search/{searchKey}', 'DeprecTypeController@search');
     Route::get('deprec-type/get-ajax-byid/{typeId}', 'DeprecTypeController@getById');
-    Route::get('deprec-type/get-ajax-all/{cateId}', 'DeprecTypeController@getAjexAll');
+    Route::get('deprec-type/get-ajax-all', 'DeprecTypeController@getAjexAll');
     Route::get('deprec-type/add', 'DeprecTypeController@add');
     Route::post('deprec-type/store', 'DeprecTypeController@store');
     Route::get('deprec-type/edit/{typeId}', 'DeprecTypeController@edit');

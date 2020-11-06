@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AssetCate extends Model
+class AssetCategory extends Model
 {
     protected $table = 'asset_categories';
     protected $primaryKey = 'cate_id';

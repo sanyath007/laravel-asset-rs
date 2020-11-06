@@ -18,7 +18,7 @@ class AssetType extends Model
     
     public function cate()
   	{
-      	return $this->belongsTo('App\Models\AssetCate', 'cate_id', 'cate_id');
+      	return $this->belongsTo('App\Models\AssetCategory', 'cate_id', 'cate_id');
   	}
 
     public function asset()

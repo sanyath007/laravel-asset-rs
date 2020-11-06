@@ -120,6 +120,16 @@
 						</a>
 						<ul class="treeview-menu">
 							<li>
+								<a href="{{ url('/asset-group/list') }}">
+									<i class="fa fa-circle-o"></i> กลุ่มครุภัณฑ์
+								</a>
+							</li>
+							<li>
+								<a href="{{ url('/asset-class/list') }}">
+									<i class="fa fa-circle-o"></i> กลุ่มย่อยครุภัณฑ์
+								</a>
+							</li>
+							<li>
 								<a href="{{ url('/asset-cate/list') }}">
 									<i class="fa fa-circle-o"></i> หมวดครุภัณฑ์
 								</a>
@@ -132,6 +142,11 @@
 							<li>
 								<a href="{{ url('/asset-unit/list') }}">
 									<i class="fa fa-circle-o"></i> หน่วยครุภัณฑ์
+								</a>
+							</li>
+							<li>
+								<a href="{{ url('/deprec-type/list') }}">
+									<i class="fa fa-circle-o"></i> ประเภทการคิดค่าเสื่อม
 								</a>
 							</li>
 							<li>

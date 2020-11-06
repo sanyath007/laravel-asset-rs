@@ -5,18 +5,18 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายการชนิดครุภัณฑ์
+            รายการประเภทการคิดค่าเสื่อม
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายการชนิดครุภัณฑ์</li>
+            <li class="breadcrumb-item active">รายการประเภทการคิดค่าเสื่อม</li>
         </ol>
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="assetTypeCtrl" ng-init="getData()">
+    <section class="content" ng-controller="deprecTypeCtrl" ng-init="getData()">
 
         <div class="row">
             <div class="col-md-12">
@@ -30,7 +30,7 @@
                         <div class="box-body">
                             <div class="col-md-12">                                
                                 <div class="form-group">
-                                    <label>ค้นหาชื่อชนิดครุภัณฑ์</label>
+                                    <label>ค้นหาชื่อประเภทการคิดค่าเสื่อม</label>
                                     <input type="text" id="searchKey" ng-keyup="getData($event)" class="form-control">
                                 </div><!-- /.form group -->
                             </div>
@@ -38,7 +38,7 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer">
-                            <a href="{{ url('/asset-type/add') }}" class="btn btn-primary"> เพิ่มชนิดครุภัณฑ์</a>
+                            <a href="{{ url('/deprec-type/add') }}" class="btn btn-primary"> เพิ่มประเภทการคิดค่าเสื่อม</a>
                         </div>
                     </form>
                 </div><!-- /.box -->
@@ -46,7 +46,7 @@
                 <div class="box">
 
                     <div class="box-header with-border">
-                      <h3 class="box-title">รายการชนิดครุภัณฑ์</h3>
+                      <h3 class="box-title">รายการประเภทการคิดค่าเสื่อม</h3>
                     </div><!-- /.box-header -->
 
                     <div class="box-body">
@@ -55,29 +55,27 @@
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>
                                     <th style="width: 10%; text-align: center;">เลขรหัส</th>
-                                    <th style="text-align: left;">ชื่อชนิดครุภัณฑ์</th>
-                                    <th style="width: 10%; text-align: left;">อายุการใช้งาน (ปี)</th>
-                                    <th style="width: 10%; text-align: left;">อัตรค่าเสื่อม/ปี (%)</th>
-                                    <th style="width: 30%; text-align: left;">หมวดครุภัณฑ์</th>
+                                    <th style="text-align: left;">ชื่อประเภทการคิดค่าเสื่อม</th>
+                                    <th style="width: 15%; text-align: left;">อายุการใช้งาน (ปี)</th>
+                                    <th style="width: 15%; text-align: left;">อัตรค่าเสื่อม/ปี (%)</th>
                                     <th style="width: 8%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, type) in types">
+                                <tr ng-repeat="(index, deprecType) in deprecTypes">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ type.type_no }}</td>
-                                    <td style="text-align: left;">@{{ type.type_name }}</td>
-                                    <td style="text-align: center;">@{{ type.life_y }}</td>
-                                    <td style="text-align: center;">@{{ type.deprec_rate_y }}</td>
-                                    <td style="text-align: left;">@{{ type.cates.cate_no + '-' +type.cates.cate_name }}</td>
+                                    <td style="text-align: center;">@{{ deprecType.deprec_type_no }}</td>
+                                    <td style="text-align: left;">@{{ deprecType.deprec_type_name }}</td>
+                                    <td style="text-align: center;">@{{ deprecType.deprec_life_y }}</td>
+                                    <td style="text-align: center;">@{{ deprecType.deprec_rate_y }}</td>
                                     <td style="text-align: center;">
-                                        <a ng-click="edit(type.type_id)" class="btn btn-warning btn-sm">
+                                        <a ng-click="edit(deprecType.deprec_type_id)" class="btn btn-warning btn-sm">
                                             <i class="fa fa-edit"></i>
                                         </a>
 
                                         @if(Auth::user()->person_id == '1300200009261')
 
-                                            <a ng-click="delete(type.type_id)" class="btn btn-danger btn-sm">
+                                            <a ng-click="delete(deprecType.deprec_type_id)" class="btn btn-danger btn-sm">
                                                 <i class="fa fa-trash"></i>
                                             </a>
                                         

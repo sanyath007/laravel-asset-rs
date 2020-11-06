@@ -32,16 +32,15 @@ class DeprecTypeController extends Controller
 
     public function list()
     {
-    	return view('asset-types.list');
+    	return view('deprec-types.list');
     }
 
     public function search($searchKey)
     {
         if($searchKey == '0') {
-            $types = DeprecType::with('cates')->paginate(20);
+            $types = DeprecType::paginate(20);
         } else {
-            $types = DeprecType::where('type_name', 'like', '%'.$searchKey.'%')
-                        ->with('cates')
+            $types = DeprecType::where('deprec_type_name', 'like', '%'.$searchKey.'%')
                         ->paginate(20);
         }
 
@@ -74,7 +73,7 @@ class DeprecTypeController extends Controller
 
     public function add()
     {
-    	return view('asset-types.add');
+    	return view('deprec-types.add');
     }
 
     public function store(Request $req)
@@ -108,7 +107,7 @@ class DeprecTypeController extends Controller
 
     public function edit($typeId)
     {
-        return view('asset-types.edit', [
+        return view('deprec-types.edit', [
             'type' => DeprecType::find($typeId)
         ]);
     }
