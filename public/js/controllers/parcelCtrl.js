@@ -1,4 +1,4 @@
-app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalService, StringFormatService, ReportService, PaginateService) {
+app.controller('parcelCtrl', function(CONFIG, $scope, $http, toaster, ModalService, StringFormatService, ReportService, PaginateService) {
 /** ################################################################################## */
     $scope.loading = false;
     $scope.cboAssetCate = "";
@@ -14,58 +14,28 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
         asset_no: '',
         asset_name: '',
         description: '',
-        parcel_id: '',
-        amount: 1,
+        asset_type: '',
+        amount: '',
         unit: '',
         unit_price: '',
         method: '',
         image: '',
         reg_no: '',
         budget_type: '',
-        purchased_method: '',
         year: '',
+        supplier: '',
         doc_type: '',
         doc_no: '',
         doc_date: '',
         date_in: '',
         date_exp: '',
-        depart: '',
-        supplier: '',
+        deprec_type: '',
+        first_y_month: '',
         remark: '',
         status: '',
     };
-    
+
     $scope.barOptions = {};
-    $scope.lifeYear = 0;
-
-    /** Init Form elements */
-    // $('.select2').select2();
-
-    $('#date_in').datepicker({
-        autoclose: true,
-        language: 'th',
-        format: 'dd/mm/yyyy',
-        thaiyear: true
-    }).on('changeDate', function(event){
-        let addDate = moment(event.date).add(parseInt($scope.lifeYear), 'years').format('YYYY-MM-DD');
-        let [ year, month, day ] = addDate.split('-');
-        
-        $scope.asset.date_exp = day+ '/' +month+ '/' +(parseInt(year)+543);
-    });
-
-    $('#date_exp').datepicker({
-        autoclose: true,
-        language: 'th',
-        format: 'dd/mm/yyyy',
-        thaiyear: true
-    });
-
-    $('#doc_date').datepicker({
-        autoclose: true,
-        language: 'th',
-        format: 'dd/mm/yyyy',
-        thaiyear: true
-    });
 
     $scope.clearAssetObj = function() {
         $scope.asset = {
@@ -73,7 +43,7 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
             asset_no: '',
             asset_name: '',
             description: '',
-            parcel_id: '',
+            asset_type: '',
             amount: '',
             unit: '',
             unit_price: '',
@@ -81,7 +51,6 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
             image: '',
             reg_no: '',
             budget_type: '',
-            purchased_method: '',
             year: '',
             supplier: '',
             doc_type: '',
@@ -89,6 +58,8 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
             doc_date: '',
             date_in: '',
             date_exp: '',
+            deprec_type: '',
+            first_y_month: '',
             remark: '',
             status: '',
         };
@@ -116,6 +87,70 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
         });
     }
 
+    $scope.getAssetType = function (cateId) {
+        $scope.loading = true;
+
+        $http.get(CONFIG.baseUrl+ '/asset-type/get-ajax-all/' +cateId)
+        .then(function(res) {
+            console.log(res);
+            $scope.types = res.data.types;
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    }
+
+    $scope.getAssetChart = function (creditorId) {
+        ReportService.getSeriesData('/report/debt-chart/', creditorId)
+        .then(function(res) {
+            console.log(res);
+
+            var debtSeries = [];
+            var paidSeries = [];
+            var setzeroSeries = [];
+
+            angular.forEach(res.data, function(value, key) {
+                let debt = (value.debt) ? parseFloat(value.debt.toFixed(2)) : 0;
+                let paid = (value.paid) ? parseFloat(value.paid.toFixed(2)) : 0;
+                let setzero = (value.setzero) ? parseFloat(value.setzero.toFixed(2)) : 0;
+                
+                debtSeries.push(debt);
+                paidSeries.push(paid);
+                setzeroSeries.push(setzero);
+            });
+
+            var categories = ['ยอดหนี้']
+            $scope.barOptions = ReportService.initBarChart("barContainer", "", categories, 'จำนวน');
+            $scope.barOptions.series.push({
+                name: 'หนี้คงเหลือ',
+                data: debtSeries
+            }, {
+                name: 'ตัดจ่ายแล้ว',
+                data: paidSeries
+            }, {
+                name: 'ลดหนี้ศูนย์',
+                data: setzeroSeries
+            });
+
+            var chart = new Highcharts.Chart($scope.barOptions);
+        }, function(err) {
+            console.log(err);
+        });
+    };
+
+    $scope.getAsset = function(typeId) {
+        $http.get(CONFIG.baseUrl + '/asset/get-ajax-byid/' +typeId)
+        .then(function(res) {
+            console.log(res);
+            $scope.type = res.data.type;
+        }, function(err) {
+            console.log(err);
+        });
+    }
+
+
     $scope.getDebtWithURL = function(URL) {
         console.log(URL);
         $scope.debts = [];
@@ -138,57 +173,9 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
         });
     }
 
-    $scope.getAssetType = function (cateId) {
-        $scope.loading = true;
-
-        $http.get(CONFIG.baseUrl+ '/asset-type/get-ajax-all/' +cateId)
-        .then(function(res) {
-            console.log(res);
-            $scope.types = res.data.types;
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    }
-
-    $scope.setAssetNo = function (parcelId) {
-        $http.get(CONFIG.baseUrl+ '/parcel/get-ajax-byid/' +parcelId)
-        .then(function(res) {
-            console.log(res);
-            
-            $scope.asset.asset_no = res.data.parcel.parcel_no + '/';
-            $scope.asset.asset_name = res.data.parcel.parcel_name;
-
-            $scope.lifeYear = res.data.parcel.deprec_type.deprec_life_y;
-        }, function(err) {
-            console.log(err);
-        });
-    }
-
-    $scope.getAsset = function(assetId) {
-        $http.get(CONFIG.baseUrl + '/asset/get-ajax-byid/' +assetId)
-        .then(function(res) {
-            $scope.asset = res.data.asset;
-            console.log($scope.asset);
-            /** Call setAssetNo function to get parcel data */
-            $scope.setAssetNo($scope.asset.parcel_id)
-            /** Convert int value to string */
-            $scope.asset.parcel_id = $scope.asset.parcel_id.toString();
-            $scope.asset.unit = $scope.asset.unit.toString();
-            $scope.asset.budget_type = $scope.asset.budget_type.toString();
-            $scope.asset.purchased_method = $scope.asset.purchased_method.toString();
-            $scope.asset.depart = $scope.asset.depart.toString();
-            $scope.asset.supplier = $scope.asset.supplier.toString();
-            $scope.asset.doc_type = $scope.asset.doc_type.toString();
-            /** Convert db date to thai date. */
-            $scope.asset.date_in = StringFormatService.convFromDbDate($scope.asset.date_in);
-            $scope.asset.date_exp = StringFormatService.convFromDbDate($scope.asset.date_exp);            
-            $scope.asset.doc_date = StringFormatService.convFromDbDate($scope.asset.doc_date);
-        }, function(err) {
-            console.log(err);
-        });
+    $scope.calculateVat = function(amount, vatRate) {
+        $scope.debt.debt_vat = ((amount * vatRate) / 100).toFixed(2);
+        $scope.debt.debt_total = (parseFloat(amount) + parseFloat($scope.debt.debt_vat)).toFixed(2);
     }
 
     $scope.store = function(event, form) {
@@ -196,7 +183,6 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
         /** Convert thai date to db date. */
         $scope.asset.date_in = StringFormatService.convToDbDate($scope.asset.date_in);
         $scope.asset.doc_date = StringFormatService.convToDbDate($scope.asset.doc_date);
-        $scope.asset.date_exp = $('#date_exp').val();
         /** Get user id */
         // $scope.asset.created_by = $("#user").val();
         // $scope.asset.updated_by = $("#user").val();
@@ -216,6 +202,20 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
         $scope.clearAssetObj();
     }
 
+    $scope.getAsset = function(assetId) {
+        $http.get(CONFIG.baseUrl + '/asset/get-ajax-byid/' +assetId)
+        .then(function(res) {
+            console.log(res);
+            $scope.asset = res.data.asset;
+
+            /** Convert db date to thai date. */
+            $scope.asset.date_in = StringFormatService.convFromDbDate($scope.asset.date_in);
+            $scope.asset.doc_date = StringFormatService.convFromDbDate($scope.asset.doc_date);
+        }, function(err) {
+            console.log(err);
+        });
+    }
+
     $scope.edit = function(assetId) {
         console.log(assetId);
 
@@ -229,24 +229,23 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
 
         /** Convert thai date to db date. */
         $scope.asset.date_in = StringFormatService.convToDbDate($scope.asset.date_in);
-        $scope.asset.date_exp = StringFormatService.convToDbDate($scope.asset.date_exp);
         $scope.asset.doc_date = StringFormatService.convToDbDate($scope.asset.doc_date);
         /** Get user id */
         // $scope.asset.created_by = $("#user").val();
         // $scope.asset.updated_by = $("#user").val();
         console.log($scope.asset);
 
-        if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + $scope.asset.asset_id + " ใช่หรือไม่?")) {
-            // $http.put(CONFIG.baseUrl + '/asset/update/', $scope.asset)
-            // .then(function(res) {
-            //     console.log(res);
-            // }, function(err) {
-            //     console.log(err);
-            // });
-            
-            /** Redirect to debt list */
-            // window.location.href = CONFIG.baseUrl + '/asset/list';
+        if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + assetId + " ใช่หรือไม่?")) {
+            $http.put(CONFIG.baseUrl + '/asset/update/', $scope.asset)
+            .then(function(res) {
+                console.log(res);
+            }, function(err) {
+                console.log(err);
+            });
         }
+
+        /** Redirect to debt list */
+        window.location.href = CONFIG.baseUrl + '/asset/list';
     };
 
     $scope.delete = function(assettId) {
@@ -286,43 +285,5 @@ app.controller('assetCtrl', function(CONFIG, $scope, $http, toaster, ModalServic
                 toaster.pop('error', "พบข้อผิดพลาดในระหว่างการดำเนินการ !!!", "");
             });
         }
-    };
-
-    $scope.getAssetChart = function (creditorId) {
-        ReportService.getSeriesData('/report/debt-chart/', creditorId)
-        .then(function(res) {
-            console.log(res);
-
-            var debtSeries = [];
-            var paidSeries = [];
-            var setzeroSeries = [];
-
-            angular.forEach(res.data, function(value, key) {
-                let debt = (value.debt) ? parseFloat(value.debt.toFixed(2)) : 0;
-                let paid = (value.paid) ? parseFloat(value.paid.toFixed(2)) : 0;
-                let setzero = (value.setzero) ? parseFloat(value.setzero.toFixed(2)) : 0;
-                
-                debtSeries.push(debt);
-                paidSeries.push(paid);
-                setzeroSeries.push(setzero);
-            });
-
-            var categories = ['ยอดหนี้']
-            $scope.barOptions = ReportService.initBarChart("barContainer", "", categories, 'จำนวน');
-            $scope.barOptions.series.push({
-                name: 'หนี้คงเหลือ',
-                data: debtSeries
-            }, {
-                name: 'ตัดจ่ายแล้ว',
-                data: paidSeries
-            }, {
-                name: 'ลดหนี้ศูนย์',
-                data: setzeroSeries
-            });
-
-            var chart = new Highcharts.Chart($scope.barOptions);
-        }, function(err) {
-            console.log(err);
-        });
     };
 });

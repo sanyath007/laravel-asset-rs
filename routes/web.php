@@ -55,14 +55,29 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('/asset/validate', 'AssetController@formValidate');
     Route::get('asset/list', 'AssetController@list');
     Route::get('asset/search/{cate}/{type}/{status}/{searchKey}', 'AssetController@search');
-    Route::get('asset/get-asset/{debtId}', 'AssetController@getById');
+    Route::get('asset/get-ajax-all', 'AssetController@getAjexAll');
+    Route::get('asset/get-ajax-byid/{assetId}', 'AssetController@getById');
     Route::get('asset/add', 'AssetController@add');
     Route::post('asset/store', 'AssetController@store');
-    Route::get('asset/edit/{creditor}/{debtId}', 'AssetController@edit');
+    Route::get('asset/edit/{assetId}', 'AssetController@edit');
     Route::put('asset/update', 'AssetController@update');
-    Route::delete('asset/delete/{debtId}', 'AssetController@delete');
+    Route::delete('asset/delete/{assetId}', 'AssetController@delete');
     Route::get('asset/discharge', 'AssetController@discharge');
     Route::post('asset/discharge', 'AssetController@doDischarge');
+    
+    /** Parcel */
+    Route::post('/parcel/validate', 'ParcelController@formValidate');
+    Route::get('parcel/list', 'ParcelController@list');
+    Route::get('parcel/search/{cate}/{type}/{status}/{searchKey}', 'ParcelController@search');
+    Route::get('parcel/get-ajax-all', 'ParcelController@getAjexAll');
+    Route::get('parcel/get-ajax-byid/{parcelId}', 'ParcelController@getById');
+    Route::get('parcel/add', 'ParcelController@add');
+    Route::post('parcel/store', 'ParcelController@store');
+    Route::get('parcel/edit/{parcelId}', 'ParcelController@edit');
+    Route::put('parcel/update', 'ParcelController@update');
+    Route::delete('parcel/delete/{parcelId}', 'ParcelController@delete');
+    Route::get('parcel/discharge', 'ParcelController@discharge');
+    Route::post('parcel/discharge', 'ParcelController@doDischarge');
 
     /** Asset Type */
     Route::post('/asset-type/validate', 'AssetTypeController@formValidate');

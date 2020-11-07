@@ -35,62 +35,28 @@
                         <div class="row">
                                 <div class="col-md-6">
                                     
-                                <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'parcel_id')}">
-                                        <label>พัสดุหลัก :</label>
-                                        <select
-                                            id="parcel_id"
-                                            name="parcel_id"
-                                            ng-model="asset.parcel_id"
-                                            class="form-control select2"
-                                            style="width: 100%; font-size: 12px;"
-                                            tabindex="2"
-                                            disabled
-                                        >
-                                            <!-- <option value="" selected="selected">-- กรุณาเลือก --</option> -->
-
-                                            @foreach($parcels as $parcel)
-
-                                                <option value="{{ $parcel->parcel_id }}">
-                                                    {{ $parcel->parcel_no.'-'.$parcel->parcel_name }}
-                                                </option>
-
-                                            @endforeach
-
-                                        </select>
-                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'parcel_id')"></span>
-                                        <span class="help-block" ng-show="checkValidate(asset, 'parcel_id')">กรุณาเลือกชนิดครุภัณฑ์</span>
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'asset_no')}">
+                                        <label>เลขพัสดุ :</label>
+                                        <input  type="text" 
+                                                id="asset_no" .
+                                                name="asset_no" 
+                                                ng-model="asset.asset_no" 
+                                                class="form-control"
+                                                tabindex="4">
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'asset_no')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'asset_no')">กรุณาระบุเลขพัสดุ</span>
                                     </div>
 
                                     <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'asset_name')}">
                                         <label>ชื่อครุภัณฑ์ :</label>
-                                        <input
-                                            type="text" 
-                                            id="asset_name" 
-                                            name="asset_name" 
-                                            ng-model="asset.asset_name" 
-                                            class="form-control"
-                                            tabindex="6"
-                                        >
+                                        <input  type="text" 
+                                                id="asset_name" 
+                                                name="asset_name" 
+                                                ng-model="asset.asset_name" 
+                                                class="form-control"
+                                                tabindex="6">
                                         <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'asset_name')"></span>
                                         <span class="help-block" ng-show="checkValidate(asset, 'asset_name')">กรุณาระบุชื่อครุภัณฑ์</span>
-                                    </div>
-                                    
-                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'date_exp')}">
-                                        <label>วันที่หมดอายุการใช้งาน :</label>
-
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-clock-o"></i>
-                                            </div>
-                                            <input  type="text" 
-                                                    id="date_exp" 
-                                                    name="date_exp" 
-                                                    ng-model="asset.date_exp" 
-                                                    class="form-control pull-right"
-                                                    tabindex="1">
-                                        </div>
-                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'date_exp')"></span>
-                                        <span class="help-block" ng-show="checkValidate(asset, 'date_exp')">กรุณาเลือกวันที่หมดอายุการใช้งาน</span>
                                     </div>
 
                                     <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'amount')}">
@@ -105,19 +71,45 @@
                                         <span class="help-block" ng-show="checkValidate(asset, 'amount')">กรุณาระบุจำนวน</span>
                                     </div>
 
-                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'budget_type')}">
-                                        <label>ประเภทเงิน :</label>
-                                        <select id="budget_type" 
-                                                name="budget_type"
-                                                ng-model="asset.budget_type"
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'asset_cate')}">
+                                        <label>หมวดครุภัณฑ์ :</label>
+                                        <select id="asset_cate" 
+                                                name="asset_cate"
+                                                ng-model="asset.asset_cate"
+                                                ng-change="getAssetType(asset.asset_cate);"
                                                 class="form-control select2" 
                                                 style="width: 100%; font-size: 12px;"
                                                 tabindex="2">
-                                            <!-- <option value="" selected="selected">-- กรุณาเลือก --</option> -->
+                                            <option value="" selected="selected">-- กรุณาเลือก --</option>
+
+                                            @foreach($cates as $cate)
+
+                                                <option value="{{ $cate->cate_id }}">
+                                                    {{ $cate->cate_no.'-'.$cate->cate_name }}
+                                                </option>
+
+                                            @endforeach
+                                                
+                                        </select>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'asset_cate')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'asset_cate')">กรุณาเลือกหมวดครุภัณฑ์</span>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'budget_type')}">
+                                        <label>ประเภทเงิน :</label>
+                                        <select id="budget_type"
+                                                name="budget_type"
+                                                class="form-control select2"
+                                                style="width: 100%; font-size: 12px;"
+                                                tabindex="2">
+                                            <option value="" selected="selected">-- กรุณาเลือก --</option>
 
                                             @foreach($budgets as $budget)
 
-                                                <option value="{{ $budget->budget_type_id }}">
+                                                <option
+                                                    value="{{ $budget->budget_type_id }}"
+                                                    {{ $budget->budget_type_id == $asset->budget_type ? 'selected' : '' }}
+                                                >
                                                     {{ $budget->budget_type_name }}
                                                 </option>
 
@@ -145,15 +137,18 @@
                                         <label>หน่วยงาน :</label>
                                         <select id="depart" 
                                                 name="depart"
-                                                ng-model="asset.depart"
+                                                ng-model="asset.depart" 
                                                 class="form-control select2" 
                                                 style="width: 100%; font-size: 12px;"
                                                 tabindex="2">
-                                            <!-- <option value="" selected="selected">-- กรุณาเลือก --</option> -->
+                                            <option value="" selected="selected">-- กรุณาเลือก --</option>
 
                                             @foreach($departs as $depart)
 
-                                                <option value="{{ $depart->depart_id }}">
+                                                <option
+                                                    value="{{ $depart->depart_id }}"
+                                                    {{ $depart->depart_id == $asset->depart ? 'selected' : '' }}
+                                                >
                                                     {{ $depart->depart_name }}
                                                 </option>
 
@@ -162,6 +157,31 @@
                                         </select>
                                         <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'depart')"></span>
                                         <span class="help-block" ng-show="checkValidate(asset, 'depart')">กรุณาเลือกหหน่วยงาน</span>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'deprec_type')}">
+                                        <label class="control-label">ประเภทการคิดค่าเสื่อม :</label>
+                                        <select id="deprec_type" 
+                                                name="deprec_type" 
+                                                class="form-control select2" 
+                                                style="width: 100%; font-size: 12px;"
+                                                tabindex="2">
+                                            <option value="" selected="selected">-- กรุณาเลือก --</option>
+
+                                            @foreach($deprecTypes as $deprecType)
+
+                                                <option
+                                                    value="{{ $deprecType->deprec_type_id }}"
+                                                    {{ $deprecType->deprec_type_id == $asset->deprec_type ? 'selected' : '' }}
+                                                >
+                                                    {{ $deprecType->deprec_type_no.'-'.$deprecType->deprec_type_name }}
+                                                </option>
+
+                                            @endforeach
+                                                
+                                        </select>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'deprec_type')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'deprec_type')">กรุณาเลือกประเภทการคิดค่าเสื่อม</span>
                                     </div>
 
                                     <div class="form-group">
@@ -179,32 +199,6 @@
 
                                 <div class="col-md-6">
 
-                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'asset_no')}">
-                                        <label>เลขพัสดุ :</label>
-                                        <input  
-                                            type="text" 
-                                            id="asset_no" .
-                                            name="asset_no" 
-                                            ng-model="asset.asset_no" 
-                                            class="form-control"
-                                            tabindex="4"
-                                            disabled
-                                        >
-                                        <!-- /input-group<div class="input-group">
-                                            <input  type="text" 
-                                                id="asset_no" .
-                                                name="asset_no" 
-                                                ng-model="asset.asset_no" 
-                                                class="form-control"
-                                                tabindex="4">
-                                            <div class="input-group-btn">
-                                                <button type="button" class="btn btn-danger">search</button>
-                                            </div>
-                                        </div> -->
-                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'asset_no')"></span>
-                                        <span class="help-block" ng-show="checkValidate(asset, 'asset_no')">กรุณาระบุเลขพัสดุ</span>
-                                    </div>
-
                                     <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'date_in')}">
                                         <label>วันที่รับเข้าระบบ :</label>
 
@@ -212,14 +206,12 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-clock-o"></i>
                                             </div>
-                                            <input
-                                                type="text" 
-                                                id="date_in" 
-                                                name="date_in" 
-                                                ng-model="asset.date_in"
-                                                class="form-control pull-right"
-                                                tabindex="1"
-                                            >
+                                            <input  type="text" 
+                                                    id="date_in" 
+                                                    name="date_in" 
+                                                    ng-model="asset.date_in" 
+                                                    class="form-control pull-right"
+                                                    tabindex="1">
                                         </div>
                                         <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'date_in')"></span>
                                         <span class="help-block" ng-show="checkValidate(asset, 'date_in')">กรุณาเลือกวันที่รับเข้าระบบ</span>
@@ -241,15 +233,14 @@
                                         <label>หน่วยนับ :</label>
                                         <select id="unit" 
                                                 name="unit"
-                                                ng-model="asset.unit"
                                                 class="form-control select2" 
                                                 style="width: 100%; font-size: 12px;"
                                                 tabindex="2">
-                                            <!-- <option value="" selected="selected">-- กรุณาเลือก --</option> -->
+                                            <option value="" selected="selected">-- กรุณาเลือก --</option>
 
                                             @foreach($units as $unit)
 
-                                                <option value="{{ $unit->unit_id }}">
+                                                <option value="{{ $unit->unit_id }}" {{ $unit->unit_id == $asset->unit ? 'selected' : '' }}>
                                                     {{ $unit->unit_name }}
                                                 </option>
 
@@ -258,21 +249,37 @@
                                         </select>
                                         <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'unit')"></span>
                                         <span class="help-block" ng-show="checkValidate(asset, 'unit')">กรุณาเลือกหน่วยนับ</span>
+                                    </div>                
+
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'asset_type')}">
+                                        <label>ชนิดครุภัณฑ์ :</label>
+                                        <select id="asset_type" 
+                                                name="asset_type"
+                                                ng-model="asset.asset_type" 
+                                                class="form-control select2" 
+                                                style="width: 100%; font-size: 12px;"
+                                                tabindex="2">
+                                            <option value="" selected="selected">-- กรุณาเลือก --</option>
+                                            <option ng-repeat="(index, type) in types" value="@{{ type.type_id }}">
+                                                @{{ type.type_name }}
+                                            </option>
+                                        </select>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'asset_type')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'asset_type')">กรุณาเลือกชนิดครุภัณฑ์</span>
                                     </div>
 
                                     <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'purchased_method')}">
                                         <label>ประเภทการได้มา :</label>
                                         <select id="purchased_method" 
                                                 name="purchased_method"
-                                                ng-model="asset.purchased_method"
                                                 class="form-control select2" 
                                                 style="width: 100%; font-size: 12px;"
                                                 tabindex="2">
-                                            <!-- <option value="" selected="selected">-- กรุณาเลือก --</option> -->
+                                            <option value="" selected="selected">-- กรุณาเลือก --</option>
 
                                             @foreach($methods as $method)
 
-                                                <option value="{{ $method->method_id }}">
+                                                <option value="{{ $method->method_id }}" {{ $method->method_id == $asset->purchased_method ? 'selected' : '' }}>
                                                     {{ $method->method_name }}
                                                 </option>
 
@@ -298,17 +305,19 @@
 
                                     <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'supplier')}">
                                         <label class="control-label">ผู้จัดจำหน่าย :</label>
-                                        <select id="supplier" 
+                                        <select id="supplier"
                                                 name="supplier"
-                                                ng-model="asset.supplier"
-                                                class="form-control select2" 
+                                                class="form-control select2"
                                                 style="width: 100%; font-size: 12px;"
                                                 tabindex="2">
-                                            <!-- <option value="" selected="selected">-- กรุณาเลือก --</option> -->
+                                            <option value="" selected="selected">-- กรุณาเลือก --</option>
 
                                             @foreach($suppliers as $supplier)
 
-                                                <option value="{{ $supplier->supplier_id }}">
+                                                <option
+                                                    value="{{ $supplier->supplier_id }}"
+                                                    {{ $supplier->supplier_id == $asset->supplier ? 'selected' : '' }}    
+                                                >
                                                     {{ $supplier->supplier_name }}
                                                 </option>
 
@@ -317,6 +326,18 @@
                                         </select>
                                         <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'supplier')"></span>
                                         <span class="help-block" ng-show="checkValidate(asset, 'supplier')">กรุณาเลือกผู้จัดจำหน่าย</span>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'first_y_month')}">
+                                        <label class="control-label">จน.เดือนที่คิดค่าเสื่อมปีแรก :</label>
+                                        <input  type="text" 
+                                                id="first_y_month" 
+                                                name="first_y_month" 
+                                                ng-model="asset.first_y_month" 
+                                                class="form-control"
+                                                tabindex="1">
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="checkValidate(asset, 'first_y_month')"></span>
+                                        <span class="help-block" ng-show="checkValidate(asset, 'first_y_month')">กรุณาระบุจน.เดือนที่คิดค่าเสื่อมปีแรก</span>
                                     </div>
 
                                     <div class="form-group">
@@ -345,17 +366,16 @@
                                     <div class="col-md-12">       
                                         <div class="form-group" ng-class="{'has-error has-feedback': checkValidate(asset, 'doc_type')}">
                                             <label class="control-label">ประเภทหลักฐาน :</label>
-                                            <select id="doc_type"
+                                            <select id="doc_type" 
                                                     name="doc_type"
-                                                    ng-model="asset.doc_type"
-                                                    class="form-control select2"
+                                                    class="form-control select2" 
                                                     style="width: 100%; font-size: 12px;"
                                                     tabindex="2">
-                                                <!-- <option value="" selected="selected">-- กรุณาเลือก --</option> -->
+                                                <option value="" selected="selected">-- กรุณาเลือก --</option>
 
                                                 @foreach($docs as $doc)
 
-                                                    <option value="{{ $doc->doc_type_id }}">
+                                                    <option value="{{ $doc->doc_type_id }}" {{ $doc->doc_type_id == $asset->doc_type ? 'selected' : '' }}>
                                                         {{ $doc->doc_type_name }}
                                                     </option>
 
@@ -424,7 +444,43 @@
 
     <script>
         $(function () {
-            $('.select2').select2();
+            //Initialize Select2 Elements
+            $('.select2').select2()
+
+            $('#debt_date').datepicker({
+                autoclose: true,
+                language: 'th',
+                format: 'dd/mm/yyyy',
+                thaiyear: true
+            });
+
+            $('#debt_doc_recdate').datepicker({
+                autoclose: true,
+                language: 'th',
+                format: 'dd/mm/yyyy',
+                thaiyear: true
+            });
+
+            $('#debt_doc_date').datepicker({
+                autoclose: true,
+                language: 'th',
+                format: 'dd/mm/yyyy',
+                thaiyear: true
+            });
+
+            $('#deliver_date').datepicker({
+                autoclose: true,
+                language: 'th',
+                format: 'dd/mm/yyyy',
+                thaiyear: true
+            });
+
+            $('#doc_receive').datepicker({
+                autoclose: true,
+                language: 'th',
+                format: 'dd/mm/yyyy',
+                thaiyear: true
+            });
         });
     </script>
 

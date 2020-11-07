@@ -118,6 +118,7 @@ class AssetTypeController extends Controller
     public function update(Request $req)
     {
         $type = AssetType::find($req['type_id']);
+        $type->type_no = $req['type_no'];
         $type->type_name = $req['type_name'];
         $type->cate_id = $req['cate_id'];
 

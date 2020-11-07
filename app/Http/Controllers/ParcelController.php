@@ -16,7 +16,7 @@ use App\Models\Supplier;
 use App\Models\Department;
 
 
-class AssetController extends Controller
+class ParcelController extends Controller
 {   
     protected $status = [
         '1' => 'รอเบิก',
@@ -30,20 +30,18 @@ class AssetController extends Controller
         $validator = \Validator::make($request->all(), [
             'asset_no' => 'required',
             'asset_name' => 'required',
-            'parcel_id' => 'required',
+            'asset_type' => 'required',
             'amount' => 'required',
-            'unit_price' => 'required',
             'unit' => 'required',
+            'unit_price' => 'required',
             'purchased_method' => 'required',
             'budget_type' => 'required',
             'year' => 'required',
+            'supplier' => 'required',
             'doc_type' => 'required',
             'doc_no' => 'required',
             'doc_date' => 'required',
             'date_in' => 'required',
-            'date_exp' => 'required',
-            'depart' => 'required',
-            'supplier' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -61,7 +59,7 @@ class AssetController extends Controller
 
     public function list()
     {
-    	return view('assets.list', [
+    	return view('parcels.list', [
             "suppliers" => Supplier::all(),
             "cates"     => AssetCategory::orderBy('cate_no')->get(),
             "types"     => AssetType::all(),
@@ -78,20 +76,20 @@ class AssetController extends Controller
 
         if($conditions == '0') {
             $assets = Asset::with('parcel')
+                        ->with('supplier')
+                        ->with('deprecType')
                         ->with('budgetType')
                         ->with('docType')
                         ->with('purchasedMethod')
-                        ->with('depart')
-                        ->with('supplier')
                         ->paginate(20);
         } else {
             $assets = Asset::where($conditions)
                         ->with('parcel')
+                        ->with('supplier')
+                        ->with('deprecType')
                         ->with('budgetType')
                         ->with('docType')
                         ->with('purchasedMethod')
-                        ->with('depart')
-                        ->with('supplier')
                         ->paginate(20);
         }
 
@@ -112,9 +110,9 @@ class AssetController extends Controller
     private function generateAutoId()
     {
         $debt = \DB::table('nrhosp_acc_debt')
-                    ->select('debt_id')
-                    ->orderBy('debt_id', 'DESC')
-                    ->first();
+                        ->select('debt_id')
+                        ->orderBy('debt_id', 'DESC')
+                        ->first();
 
         $startId = 'DB'.substr((date('Y') + 543), 2);
         $tmpLastId =  ((int)(substr($debt->debt_id, 4))) + 1;
@@ -125,8 +123,9 @@ class AssetController extends Controller
 
     public function add()
     {
-    	return view('assets.add', [
+    	return view('parcels.add', [
             "parcels"     => Parcel::all(),
+            "deprecTypes"     => DeprecType::all(),
             "units"     => AssetUnit::all(),
             "budgets"   => BudgetType::all(),
             "docs"   => DocumentType::all(),
@@ -144,20 +143,19 @@ class AssetController extends Controller
         $asset->asset_no = $req['asset_no'];
         $asset->asset_name = $req['asset_name'];
         $asset->description = $req['description'];
-        $asset->parcel_id = $req['parcel_id'];
+        $asset->asset_type = $req['asset_type'];
         $asset->amount = $req['amount'];
-        $asset->unit_price = $req['unit_price'];
         $asset->unit = $req['unit'];
+        $asset->unit_price = $req['unit_price'];
         $asset->purchased_method = $req['purchased_method'];
-        $asset->budget_type = $req['budget_type'];
         $asset->reg_no = $req['reg_no'];
+        $asset->budget_type = $req['budget_type'];
         $asset->year = $req['year'];
+        $asset->supplier = $req['supplier'];
         $asset->doc_type = $req['doc_type'];
         $asset->doc_no = $req['doc_no'];
         $asset->doc_date = $req['doc_date'];
         $asset->date_in = $req['date_in'];
-        $asset->depart = $req['depart'];
-        $asset->supplier = $req['supplier'];
         $asset->remark = $req['remark'];
         $asset->status = '1';
 
@@ -177,18 +175,19 @@ class AssetController extends Controller
         }
     }
 
-    public function getById($assetId)
+    public function getById($parcelId)
     {
         return [
-            'asset' => Asset::find($assetId),
+            'parcel' => Parcel::with('deprecType')->get()->find($parcelId),
         ];
     }
 
     public function edit($assetId)
     {
-        return view('assets.edit', [
+        return view('parcels.edit', [
             "asset"         => Asset::find($assetId),
             "parcels"     => Parcel::all(),
+            "deprecTypes"   => DeprecType::all(),
             "units"         => AssetUnit::all(),
             "budgets"       => BudgetType::all(),
             "docs"          => DocumentType::all(),
@@ -205,21 +204,19 @@ class AssetController extends Controller
         $asset->asset_no = $req['asset_no'];
         $asset->asset_name = $req['asset_name'];
         $asset->description = $req['description'];
-        $asset->parcel_id = $req['parcel_id'];
+        $asset->asset_type = $req['asset_type'];
         $asset->amount = $req['amount'];
-        $asset->unit_price = $req['unit_price'];
         $asset->unit = $req['unit'];
+        $asset->unit_price = $req['unit_price'];
         $asset->purchased_method = $req['method'];
-        $asset->budget_type = $req['budget_type'];
         $asset->reg_no = $req['reg_no'];
+        $asset->budget_type = $req['budget_type'];
         $asset->year = $req['year'];
+        $asset->supplier = $req['supplier'];
         $asset->doc_type = $req['doc_type'];
         $asset->doc_no = $req['doc_no'];
         $asset->doc_date = $req['doc_date'];
         $asset->date_in = $req['date_in'];
-        $asset->date_exp = $req['date_exp'];
-        $asset->depart = $req['depart'];
-        $asset->supplier = $req['supplier'];
         $asset->remark = $req['remark'];
         $asset->status = $req['status'];
 
@@ -259,7 +256,7 @@ class AssetController extends Controller
 
     public function discharge()
     {
-        return view('assets.discharge-list', [
+        return view('parcels.discharge-list', [
             "suppliers" => Supplier::all(),
             "cates"     => AssetCategory::all(),
             "types"     => AssetType::all(),

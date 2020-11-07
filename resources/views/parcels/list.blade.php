@@ -137,10 +137,10 @@
                                     <th style="width: 3%; text-align: center;">#</th>
                                     <th style="width: 10%; text-align: center;">เลขครุภัณฑ์</th>
                                     <th style="text-align: left;">ชื่อครุภัณฑ์</th>
+                                    <th style="width: 20%; text-align: left;">ชนิดครุภัณฑ์</th>
                                     <th style="width: 8%; text-align: center;">วันที่ได้รับ</th>
                                     <th style="width: 8%; text-align: center;">ประเภทเงิน</th>
-                                    <th style="width: 15%; text-align: left;">ผู้จัดจำหน่าย</th>
-                                    <th style="width: 15%; text-align: left;">หน่วยงาน</th>
+                                    <th style="width: 20%; text-align: left;">ผู้จัดจำหน่าย</th>
                                     <th style="width: 6%; text-align: center;">สถานะ</th>
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
@@ -150,10 +150,10 @@
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
                                     <td style="text-align: center;">@{{ asset.asset_no }}</td>
                                     <td style="text-align: left;">@{{ asset.asset_name }}</td>
+                                    <td style="text-align: left;">@{{ asset.asset_type.type_name }}</td>
                                     <td style="text-align: center;">@{{ asset.date_in | thdate }}</td>
                                     <td style="text-align: center;">@{{ asset.budget_type.budget_type_name }}</td>
                                     <td style="text-align: left;">@{{ asset.supplier.supplier_name }}</td>
-                                    <td style="text-align: left;">@{{ asset.depart.depart_name }}</td>
                                     <td style="text-align: center;">
                                         <span class="label label-info" ng-show="paid.asset_status!=0">
                                             @{{ (asset.status==1) ? 'รอเบิก' : 

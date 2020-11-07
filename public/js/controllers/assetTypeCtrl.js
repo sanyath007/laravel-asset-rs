@@ -85,7 +85,7 @@ app.controller('assetTypeCtrl', function($scope, $http, toaster, CONFIG, ModalSe
 
         if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + $scope.type.type_id + " ใช่หรือไม่?")) {
             $scope.type.cate_id = $('#cate_id option:selected').val();
-            
+
             $http.put(CONFIG.baseUrl + '/asset-type/update/', $scope.type)
             .then(function(res) {
                 console.log(res);
@@ -95,6 +95,8 @@ app.controller('assetTypeCtrl', function($scope, $http, toaster, CONFIG, ModalSe
                 toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
             });
         }
+
+        window.location.href = CONFIG.baseUrl + '/asset-type/list';
     };
 
     $scope.delete = function(typeId) {

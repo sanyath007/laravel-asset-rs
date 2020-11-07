@@ -37,7 +37,7 @@
                                             id="assetCate"
                                             name="assetCate"
                                             ng-model="cboAssetCate"
-                                            ng-change="getAssetType(cboAssetCate);"
+                                            ng-change="getAssetType();"
                                             class="form-control select2"
                                             style="width: 100%; font-size: 12px;">
 
@@ -45,7 +45,7 @@
                                         @foreach($cates as $cate)
 
                                             <option value="{{ $cate->cate_id }}">
-                                                {{ $cate->cate_no.'-'.$cate->cate_name }}
+                                                {{ $cate->cate_name }}
                                             </option>
 
                                         @endforeach
@@ -96,12 +96,10 @@
                                 </div><!-- /.form group -->                               
                                 
                                 <div class="form-group">
-                                    <label>ชื่อครุภัณฑ์</label>
+                                    <label>ผู้จัดจำหน่าย</label>
                                     <input
                                         type="text"
                                         id="searchKey"
-                                        name="searchKey"
-                                        ng-model="searchKeyword"
                                         ng-keyup="getData($event)"
                                         class="form-control">
                                 </div>
@@ -109,8 +107,8 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer">
-                            <a href="{{ url('/asset/add') }}" class="btn btn-primary">
-                                เพิ่มครุภัณฑ์
+                            <a ng-click="add($event)" class="btn btn-primary">
+                                เพิ่มรายการ
                             </a>
                         </div>
                     </form>
@@ -137,10 +135,10 @@
                                     <th style="width: 3%; text-align: center;">#</th>
                                     <th style="width: 10%; text-align: center;">เลขครุภัณฑ์</th>
                                     <th style="text-align: left;">ชื่อครุภัณฑ์</th>
+                                    <th style="width: 20%; text-align: left;">ชนิดครุภัณฑ์</th>
                                     <th style="width: 8%; text-align: center;">วันที่ได้รับ</th>
                                     <th style="width: 8%; text-align: center;">ประเภทเงิน</th>
-                                    <th style="width: 15%; text-align: left;">ผู้จัดจำหน่าย</th>
-                                    <th style="width: 15%; text-align: left;">หน่วยงาน</th>
+                                    <th style="width: 20%; text-align: left;">ผู้จัดจำหน่าย</th>
                                     <th style="width: 6%; text-align: center;">สถานะ</th>
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
@@ -150,10 +148,10 @@
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
                                     <td style="text-align: center;">@{{ asset.asset_no }}</td>
                                     <td style="text-align: left;">@{{ asset.asset_name }}</td>
+                                    <td style="text-align: left;">@{{ asset.asset_type.type_name }}</td>
                                     <td style="text-align: center;">@{{ asset.date_in | thdate }}</td>
                                     <td style="text-align: center;">@{{ asset.budget_type.budget_type_name }}</td>
                                     <td style="text-align: left;">@{{ asset.supplier.supplier_name }}</td>
-                                    <td style="text-align: left;">@{{ asset.depart.depart_name }}</td>
                                     <td style="text-align: center;">
                                         <span class="label label-info" ng-show="paid.asset_status!=0">
                                             @{{ (asset.status==1) ? 'รอเบิก' : 
@@ -163,18 +161,18 @@
                                         </span>
                                     </td>             
                                     <td style="text-align: center;">
-                                        <a  ng-click="detail(asset.asset_id)"
+                                        <a  ng-click="detail(asset.assetid)"
                                             class="btn btn-primary btn-xs" 
                                             title="รายละเอียด">
                                             <i class="fa fa-search"></i>
                                         </a>
-                                        <a  ng-click="edit(asset.asset_id)" 
+                                        <a  ng-click="edit(asset.id)" 
                                             ng-show="(asset.status!==4 || asset.status!==3)" 
                                             class="btn btn-warning btn-xs"
                                             title="แก้ไขรายการ">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a  ng-click="delete(asset.asset_id)" 
+                                        <a  ng-click="delete(asset.id)" 
                                             ng-show="(asset.status!==4 || asset.status!==3)" 
                                             class="btn btn-danger btn-xs"
                                             title="ลบรายการ">

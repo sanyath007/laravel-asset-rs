@@ -21,8 +21,8 @@ class AssetType extends Model
       	return $this->belongsTo('App\Models\AssetCategory', 'cate_id', 'cate_id');
   	}
 
-    public function asset()
+    public function parcel()
     {
-        return $this->hasMany('App\Models\Asset', 'asset_type', 'type_id');
+        return $this->hasMany('App\Models\Parcel', 'parcel_id', 'parcel_id');
     }
 }

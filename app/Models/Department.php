@@ -10,10 +10,10 @@ class Department extends Model
 
     protected $table = 'depart';
 
-    // public function reserve()
-    // {
-    //     return $this->hasMany('App\Reservation', 'depart_id', 'department');
-    // }
+    public function asset()
+  	{
+      	return $this->hasMany('App\Models\Asset', 'depart', 'depart_id');
+  	}
   
     // public function user()
     // {

@@ -16,14 +16,9 @@ class Asset extends Model
 
     protected $fillable = ['status'];
 
-    public function assetType()
+    public function parcel()
     {
-        return $this->belongsTo('App\Models\AssetType', 'asset_type', 'type_id');
-    }
-  
-    public function deprecType()
-    {
-        return $this->belongsTo('App\Models\DeprecType', 'deprec_type', 'deprec_type_id');
+        return $this->belongsTo('App\Models\Parcel', 'parcel_id', 'parcel_id');
     }
   
     public function budgetType()
@@ -49,6 +44,11 @@ class Asset extends Model
     public function supplier()
     {
         return $this->belongsTo('App\Models\Supplier', 'supplier', 'supplier_id');
+    }
+    
+    public function depart()
+    {
+        return $this->belongsTo('App\Models\Department', 'depart', 'depart_id');
     }
 
   	// public function app_detail()

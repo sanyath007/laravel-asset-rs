@@ -10,24 +10,10 @@
 
 	<title>Asset Management System</title>
 
+	<!-- bootstrap -->
 	<link rel="stylesheet" href="{{ asset('/bower/bootstrap/dist/css/bootstrap.min.css') }}">
-
-	<!-- Compiled and minified CSS -->
-	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css"> -->
-	<!-- <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/> -->
+	<!-- select2 -->
 	<link rel="stylesheet" href="{{ asset('/css/select2.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('/css/bootstrap-datepicker.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('/css/daterangepicker.css') }}">
-	<link rel="stylesheet" href="{{ asset('/bower/fullcalendar/dist/fullcalendar.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('/bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('/bower/ng-tags-input/ng-tags-input.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('/bower/AngularJS-Toaster/toaster.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('/bower/angular-xeditable/dist/css/xeditable.css') }}">
-	<!-- Tags Input -->
-	<!-- <link href="{{ asset('/css/bootstrap-tagsinput.css') }}" rel="stylesheet">
-	<link href="{{ asset('/css/bootstrap-tagsinput-typeahead.css') }}" rel="stylesheet"> -->
-	<!-- <link rel="stylesheet" href="{{ asset('/css/theme.css') }}"> -->
-
 	<!-- Ionicons -->
 	<link rel="stylesheet" href="{{ asset('/css/ionicons.min.css') }}">
 	<!-- jQuery jvectormap -->
@@ -40,7 +26,19 @@
 	<!-- Fonts -->
 	<!-- <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Roboto:400,300' type='text/css'> -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
+	<!-- 3rd parties -->
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css"> -->
+	<!-- <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/> -->
+	<link rel="stylesheet" href="{{ asset('/css/bootstrap-datepicker.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('/css/daterangepicker.css') }}">
+	<link rel="stylesheet" href="{{ asset('/bower/fullcalendar/dist/fullcalendar.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('/bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('/bower/ng-tags-input/ng-tags-input.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('/bower/AngularJS-Toaster/toaster.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('/bower/angular-xeditable/dist/css/xeditable.css') }}">
+	<!-- Tags Input -->
+	<!-- <link href="{{ asset('/css/bootstrap-tagsinput.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/bootstrap-tagsinput-typeahead.css') }}" rel="stylesheet"> -->
 	<!-- Inline Style -->
 	<style type="text/css">
 		.has-error .select2-selection {
@@ -98,9 +96,8 @@
 	<script src="{{ asset('/js/controllers/supplierCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/depreciationCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/deprecTypeCtrl.js') }}"></script>
+	<script src="{{ asset('/js/controllers/parcelCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/reportCtrl.js') }}"></script>
-	<script src="{{ asset('/js/controllers/approveCtrl.js') }}"></script>
-	<script src="{{ asset('/js/controllers/paymentCtrl.js') }}"></script>
 	<!--<script src="{{ asset('/js/directives/highcharts.js') }}"></script>-->
 	<script src="{{ asset('/js/services/report.js') }}"></script>
 	<script src="{{ asset('/js/services/stringFormat.js') }}"></script>
