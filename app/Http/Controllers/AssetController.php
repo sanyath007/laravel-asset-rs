@@ -74,7 +74,7 @@ class AssetController extends Controller
         $conditions = [];
         if($type != 0) array_push($conditions, ['asset_type', '=', $type]);
         if($status != 0) array_push($conditions, ['status', '=', $status]);
-        if($searchKey != 0) array_push($conditions, ['asset_name', 'like', '%'.$searchKey.'%']);
+        if($searchKey !== '0') array_push($conditions, ['asset_name', 'like', '%'.$searchKey.'%']);
 
         if($conditions == '0') {
             $assets = Asset::with('parcel')

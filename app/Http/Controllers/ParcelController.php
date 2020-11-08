@@ -24,6 +24,15 @@ class ParcelController extends Controller
         '3' => 'ถูกยืม',
         '4' => 'จำหน่าย',
     ];
+    
+    protected $parcelType = [
+        '1' => 'วัสดุสิ้นเปลื้อง',
+        '2' => 'วัสดุคงทน',
+        '3' => 'ครุภัณฑ์',
+        '4' => 'บริการ',
+        '5' => 'อาคาร/สิ่งปลูกสร้าง',
+        '6' => 'ที่ดิน',
+    ];
 
     public function formValidate (Request $request)
     {
@@ -60,41 +69,33 @@ class ParcelController extends Controller
     public function list()
     {
     	return view('parcels.list', [
-            "suppliers" => Supplier::all(),
-            "cates"     => AssetCategory::orderBy('cate_no')->get(),
-            "types"     => AssetType::all(),
-            "statuses"    => $this->status
+            "suppliers"     => Supplier::all(),
+            "cates"         => AssetCategory::orderBy('cate_no')->get(),
+            "types"         => AssetType::all(),
+            "parcel_types"  => $this->parcelType
     	]);
     }
 
-    public function search($cate, $type, $status, $searchKey)
+    public function search($parcelType, $searchKey)
     {
         $conditions = [];
-        if($type != 0) array_push($conditions, ['asset_type', '=', $type]);
-        if($status != 0) array_push($conditions, ['status', '=', $status]);
-        if($searchKey != 0) array_push($conditions, ['asset_name', 'like', '%'.$searchKey.'%']);
+        if($parcelType != 0) array_push($conditions, ['parcel_type', '=', $parcelType]);
+        if($searchKey !== '0') array_push($conditions, ['parcel_name', 'like', '%'.$searchKey.'%']);
 
         if($conditions == '0') {
-            $assets = Asset::with('parcel')
-                        ->with('supplier')
-                        ->with('deprecType')
-                        ->with('budgetType')
-                        ->with('docType')
-                        ->with('purchasedMethod')
-                        ->paginate(20);
+            $parcels = Parcel::with('assetType')
+                        ->with('deprecType')->toSql();
+                        // ->paginate(20);
         } else {
-            $assets = Asset::where($conditions)
-                        ->with('parcel')
-                        ->with('supplier')
+            $parcels = Parcel::where($conditions)
+                        ->with('assetType')
                         ->with('deprecType')
-                        ->with('budgetType')
-                        ->with('docType')
-                        ->with('purchasedMethod')
                         ->paginate(20);
         }
-
+        
         return [
-            'assets' => $assets,
+            'parcels' => $parcels,
+            "parcel_types"  => $this->parcelType
         ];
     }
 

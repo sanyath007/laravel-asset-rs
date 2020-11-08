@@ -5,18 +5,18 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายการครุภัณฑ์
+            รายการพัสดุหลัก
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายการครุภัณฑ์</li>
+            <li class="breadcrumb-item active">รายการพัสดุหลัก</li>
         </ol>
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="assetCtrl" ng-init="getData()">
+    <section class="content" ng-controller="parcelCtrl" ng-init="getData()">
 
         <div class="row">
             <div class="col-md-12">
@@ -29,71 +29,32 @@
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
                             <div class="col-md-6">
-                                <!-- Date and time range -->
-                                <div class="form-group">
-                                    <label>หมวดครุภัณฑ์</label>
-
-                                    <select
-                                            id="assetCate"
-                                            name="assetCate"
-                                            ng-model="cboAssetCate"
-                                            ng-change="getAssetType(cboAssetCate);"
-                                            class="form-control select2"
-                                            style="width: 100%; font-size: 12px;">
-
-                                        <option value="" selected="selected">-- กรุณาเลือก --</option>
-                                        @foreach($cates as $cate)
-
-                                            <option value="{{ $cate->cate_id }}">
-                                                {{ $cate->cate_no.'-'.$cate->cate_name }}
-                                            </option>
-
-                                        @endforeach
-                                        
-                                    </select>
-                                </div><!-- /.form group -->
 
                                 <div class="form-group">
-                                    <label>สถานะ</label>
+                                    <label>ประเภทพัสดุ</label>
 
                                     <select
-                                            id="assetStatus"
-                                            name="assetStatus"
-                                            ng-model="cboAssetStatus"
+                                            id="parcelType"
+                                            name="parcelType"
+                                            ng-model="cboParcelType"
                                             ng-change="getData($event)"
                                             class="form-control select2"
                                             style="width: 100%; font-size: 12px;">
 
                                         <option value="" selected="selected">-- กรุณาเลือก --</option>
-                                        @foreach($statuses as $key => $status)
+                                        @foreach($parcel_types as $key => $parcel_type)
 
                                             <option value="{{ $key }}">
-                                                {{ $status }}
+                                                {{ $parcel_type }}
                                             </option>
 
                                         @endforeach
                                         
                                     </select>
                                 </div><!-- /.form group -->
-                            </div>
+                            </div><!-- /.col -->
 
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>ชนิดครุภัณฑ์</label>
-                                    <select
-                                            id="assetType"
-                                            name="assetType"
-                                            ng-model="cboAssetType"
-                                            ng-change="getData($event)"
-                                            class="form-control select2"
-                                            style="width: 100%; font-size: 12px;">
-
-                                        <option value="" selected="selected">-- กรุณาเลือก --</option>
-                                        <option ng-repeat="(index, type) in types" value="@{{ type.type_id }}">
-                                            @{{ type.type_name }}
-                                        </option>
-                                    </select>
-                                </div><!-- /.form group -->                               
                                 
                                 <div class="form-group">
                                     <label>ชื่อครุภัณฑ์</label>
@@ -105,12 +66,12 @@
                                         ng-keyup="getData($event)"
                                         class="form-control">
                                 </div>
-                            </div>                        
+                            </div><!-- /.col -->
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer">
                             <a href="{{ url('/asset/add') }}" class="btn btn-primary">
-                                เพิ่มครุภัณฑ์
+                                เพิ่มพัสดุหลัก
                             </a>
                         </div>
                     </form>
@@ -118,7 +79,7 @@
 
                 <div class="box">
                     <div class="box-header with-border">
-                      <h3 class="box-title">รายการครุภัณฑ์</h3>
+                      <h3 class="box-title">รายการพัสดุหลัก</h3>
                     </div><!-- /.box-header -->
 
                     <div class="box-body">
@@ -135,47 +96,43 @@
                             <thead>
                                 <tr>
                                     <th style="width: 3%; text-align: center;">#</th>
-                                    <th style="width: 10%; text-align: center;">เลขครุภัณฑ์</th>
-                                    <th style="text-align: left;">ชื่อครุภัณฑ์</th>
-                                    <th style="width: 20%; text-align: left;">ชนิดครุภัณฑ์</th>
-                                    <th style="width: 8%; text-align: center;">วันที่ได้รับ</th>
-                                    <th style="width: 8%; text-align: center;">ประเภทเงิน</th>
-                                    <th style="width: 20%; text-align: left;">ผู้จัดจำหน่าย</th>
+                                    <th style="width: 10%; text-align: center;">เลขพัสดุ</th>
+                                    <th style="text-align: left;">ชื่อพัสดุหลัก</th>
+                                    <th style="width: 10%; text-align: center;">ประเภทพัสดุ</th>
+                                    <th style="width: 20%; text-align: left;">เกณฑ์การคิดค่าเสื่อม</th>
                                     <th style="width: 6%; text-align: center;">สถานะ</th>
                                     <th style="width: 10%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, asset) in assets">
+                                <tr ng-repeat="(index, parcel) in parcels">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ asset.asset_no }}</td>
-                                    <td style="text-align: left;">@{{ asset.asset_name }}</td>
-                                    <td style="text-align: left;">@{{ asset.asset_type.type_name }}</td>
-                                    <td style="text-align: center;">@{{ asset.date_in | thdate }}</td>
-                                    <td style="text-align: center;">@{{ asset.budget_type.budget_type_name }}</td>
-                                    <td style="text-align: left;">@{{ asset.supplier.supplier_name }}</td>
+                                    <td style="text-align: center;">@{{ parcel.parcel_no }}</td>
+                                    <td style="text-align: left;">@{{ parcel.parcel_name }}</td>
+                                    <td style="text-align: center;">@{{ parcel_types[parcel.parcel_type] }}</td>
+                                    <td style="text-align: left;">@{{ parcel.deprec_type.deprec_type_name }}</td>
                                     <td style="text-align: center;">
-                                        <span class="label label-info" ng-show="paid.asset_status!=0">
-                                            @{{ (asset.status==1) ? 'รอเบิก' : 
-                                                (asset.status==2) ? 'ใช้งานอยู่' : 
-                                                (asset.status==3) ? 'ถูกยืม' : 
-                                                (asset.status==4) ? 'จำหน่าย' : 'รอตรวจสอบ' }}
+                                        <span class="label label-info" ng-show="paid.parcel_status!=0">
+                                            @{{ (parcel.status==1) ? 'รอเบิก' : 
+                                                (parcel.status==2) ? 'ใช้งานอยู่' : 
+                                                (parcel.status==3) ? 'ถูกยืม' : 
+                                                (parcel.status==4) ? 'จำหน่าย' : 'รอตรวจสอบ' }}
                                         </span>
                                     </td>             
                                     <td style="text-align: center;">
-                                        <a  ng-click="detail(asset.asset_id)"
+                                        <a  ng-click="detail(parcel.parcel_id)"
                                             class="btn btn-primary btn-xs" 
                                             title="รายละเอียด">
                                             <i class="fa fa-search"></i>
                                         </a>
-                                        <a  ng-click="edit(asset.asset_id)" 
-                                            ng-show="(asset.status!==4 || asset.status!==3)" 
+                                        <a  ng-click="edit(parcel.parcel_id)" 
+                                            ng-show="(parcel.status!==4 || parcel.status!==3)" 
                                             class="btn btn-warning btn-xs"
                                             title="แก้ไขรายการ">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a  ng-click="delete(asset.asset_id)" 
-                                            ng-show="(asset.status!==4 || asset.status!==3)" 
+                                        <a  ng-click="delete(parcel.parcel_id)" 
+                                            ng-show="(parcel.status!==4 || parcel.status!==3)" 
                                             class="btn btn-danger btn-xs"
                                             title="ลบรายการ">
                                             <i class="fa fa-trash"></i>

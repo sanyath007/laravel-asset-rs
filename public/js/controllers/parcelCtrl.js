@@ -1,34 +1,22 @@
 app.controller('parcelCtrl', function(CONFIG, $scope, $http, toaster, ModalService, StringFormatService, ReportService, PaginateService) {
 /** ################################################################################## */
     $scope.loading = false;
-    $scope.cboAssetCate = "";
-    $scope.cboAssetType = "";
-    $scope.cboAssetStatus = "";
+    $scope.cboParcelType = "";
     $scope.searchKeyword = "";
 
     $scope.types = [];
-    $scope.assets = [];
+    $scope.parcels = [];
+    $scope.parcel_types = [];
 
-    $scope.asset = {
-        asset_id: '',
-        asset_no: '',
-        asset_name: '',
+    $scope.parcel = {
+        parcel_id: '',
+        parcel_no: '',
+        parcel_name: '',
         description: '',
         asset_type: '',
-        amount: '',
         unit: '',
         unit_price: '',
-        method: '',
-        image: '',
-        reg_no: '',
-        budget_type: '',
-        year: '',
         supplier: '',
-        doc_type: '',
-        doc_no: '',
-        doc_date: '',
-        date_in: '',
-        date_exp: '',
         deprec_type: '',
         first_y_month: '',
         remark: '',
@@ -39,25 +27,14 @@ app.controller('parcelCtrl', function(CONFIG, $scope, $http, toaster, ModalServi
 
     $scope.clearAssetObj = function() {
         $scope.asset = {
-            asset_id: '',
-            asset_no: '',
-            asset_name: '',
+            parcel_id: '',
+            parcel_no: '',
+            parcel_name: '',
             description: '',
             asset_type: '',
-            amount: '',
             unit: '',
             unit_price: '',
-            method: '',
-            image: '',
-            reg_no: '',
-            budget_type: '',
-            year: '',
             supplier: '',
-            doc_type: '',
-            doc_no: '',
-            doc_date: '',
-            date_in: '',
-            date_exp: '',
             deprec_type: '',
             first_y_month: '',
             remark: '',
@@ -66,19 +43,19 @@ app.controller('parcelCtrl', function(CONFIG, $scope, $http, toaster, ModalServi
     };
 
     $scope.getData = function(event) {
-        console.log(event);
-        $scope.assets = [];
+        $scope.parcels = [];
         $scope.loading = true;
 
-        let assetCate = $scope.cboAssetCate === '' ? 0 : $scope.cboAssetCate;
-        let assetType = $scope.cboAssetType === '' ? 0 : $scope.cboAssetType;
-        let assetStatus = $scope.cboAssetStatus === '' ? 0 : $scope.cboAssetStatus; 
+        let parcelType = $scope.cboParcelType === '' ? 0 : $scope.cboParcelType; 
         let searchKey = $scope.searchKeyword === '' ? 0 : $scope.searchKeyword;
 
-        $http.get(CONFIG.baseUrl+ '/asset/search/' +assetCate+ '/' +assetType+ '/' +assetStatus+ '/' +searchKey)
-        .then(function(res) {            
-            $scope.assets = res.data.assets.data;
-            $scope.pager = res.data.assets;
+        console.log(CONFIG.baseUrl+ '/parcel/search/' +parcelType+ '/' +searchKey);
+        $http.get(CONFIG.baseUrl+ '/parcel/search/' +parcelType+ '/' +searchKey)
+        .then(function(res) {      
+            console.log(res);
+            $scope.parcel_types = res.data.parcel_types;
+            $scope.parcels = res.data.parcels.data;
+            $scope.pager = res.data.parcels;
 
             $scope.loading = false;
         }, function(err) {
@@ -100,56 +77,16 @@ app.controller('parcelCtrl', function(CONFIG, $scope, $http, toaster, ModalServi
             console.log(err);
             $scope.loading = false;
         });
-    }
+    };
 
-    $scope.getAssetChart = function (creditorId) {
-        ReportService.getSeriesData('/report/debt-chart/', creditorId)
+    $scope.getParcel = function(parcelId) {
+        $http.get(CONFIG.baseUrl + '/parcel/get-ajax-byid/' +parcelId)
         .then(function(res) {
-            console.log(res);
-
-            var debtSeries = [];
-            var paidSeries = [];
-            var setzeroSeries = [];
-
-            angular.forEach(res.data, function(value, key) {
-                let debt = (value.debt) ? parseFloat(value.debt.toFixed(2)) : 0;
-                let paid = (value.paid) ? parseFloat(value.paid.toFixed(2)) : 0;
-                let setzero = (value.setzero) ? parseFloat(value.setzero.toFixed(2)) : 0;
-                
-                debtSeries.push(debt);
-                paidSeries.push(paid);
-                setzeroSeries.push(setzero);
-            });
-
-            var categories = ['ยอดหนี้']
-            $scope.barOptions = ReportService.initBarChart("barContainer", "", categories, 'จำนวน');
-            $scope.barOptions.series.push({
-                name: 'หนี้คงเหลือ',
-                data: debtSeries
-            }, {
-                name: 'ตัดจ่ายแล้ว',
-                data: paidSeries
-            }, {
-                name: 'ลดหนี้ศูนย์',
-                data: setzeroSeries
-            });
-
-            var chart = new Highcharts.Chart($scope.barOptions);
+            $scope.parcel = res.data.parcel;
         }, function(err) {
             console.log(err);
         });
     };
-
-    $scope.getAsset = function(typeId) {
-        $http.get(CONFIG.baseUrl + '/asset/get-ajax-byid/' +typeId)
-        .then(function(res) {
-            console.log(res);
-            $scope.type = res.data.type;
-        }, function(err) {
-            console.log(err);
-        });
-    }
-
 
     $scope.getDebtWithURL = function(URL) {
         console.log(URL);
@@ -171,12 +108,7 @@ app.controller('parcelCtrl', function(CONFIG, $scope, $http, toaster, ModalServi
             console.log(err);
             $scope.loading = false;
         });
-    }
-
-    $scope.calculateVat = function(amount, vatRate) {
-        $scope.debt.debt_vat = ((amount * vatRate) / 100).toFixed(2);
-        $scope.debt.debt_total = (parseFloat(amount) + parseFloat($scope.debt.debt_vat)).toFixed(2);
-    }
+    };
 
     $scope.store = function(event, form) {
         event.preventDefault();
@@ -200,21 +132,7 @@ app.controller('parcelCtrl', function(CONFIG, $scope, $http, toaster, ModalServi
         /** Clear control value and model data */
         document.getElementById(form).reset();
         $scope.clearAssetObj();
-    }
-
-    $scope.getAsset = function(assetId) {
-        $http.get(CONFIG.baseUrl + '/asset/get-ajax-byid/' +assetId)
-        .then(function(res) {
-            console.log(res);
-            $scope.asset = res.data.asset;
-
-            /** Convert db date to thai date. */
-            $scope.asset.date_in = StringFormatService.convFromDbDate($scope.asset.date_in);
-            $scope.asset.doc_date = StringFormatService.convFromDbDate($scope.asset.doc_date);
-        }, function(err) {
-            console.log(err);
-        });
-    }
+    };
 
     $scope.edit = function(assetId) {
         console.log(assetId);

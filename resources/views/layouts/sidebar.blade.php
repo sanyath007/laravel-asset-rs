@@ -120,6 +120,11 @@
 						</a>
 						<ul class="treeview-menu">
 							<li>
+								<a href="{{ url('/parcel/list') }}">
+									<i class="fa fa-circle-o"></i> พัสดุหลัก
+								</a>
+							</li>
+							<li>
 								<a href="{{ url('/asset-group/list') }}">
 									<i class="fa fa-circle-o"></i> กลุ่มครุภัณฑ์
 								</a>
@@ -146,7 +151,7 @@
 							</li>
 							<li>
 								<a href="{{ url('/deprec-type/list') }}">
-									<i class="fa fa-circle-o"></i> ประเภทการคิดค่าเสื่อม
+									<i class="fa fa-circle-o"></i> เกณฑ์การคิดค่าเสื่อม
 								</a>
 							</li>
 							<li>

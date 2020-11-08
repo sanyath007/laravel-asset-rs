@@ -68,7 +68,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     /** Parcel */
     Route::post('/parcel/validate', 'ParcelController@formValidate');
     Route::get('parcel/list', 'ParcelController@list');
-    Route::get('parcel/search/{cate}/{type}/{status}/{searchKey}', 'ParcelController@search');
+    Route::get('parcel/search/{parcelType}/{searchKey}', 'ParcelController@search');
     Route::get('parcel/get-ajax-all', 'ParcelController@getAjexAll');
     Route::get('parcel/get-ajax-byid/{parcelId}', 'ParcelController@getById');
     Route::get('parcel/add', 'ParcelController@add');
