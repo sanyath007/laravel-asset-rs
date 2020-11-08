@@ -36,9 +36,9 @@ class AssetCategoryController extends Controller
     public function search($searchKey)
     {
         if($searchKey == '0') {
-            $cates = AssetCategory::paginate(20);
+            $cates = AssetCategory::orderBy('cate_no')->paginate(20);
         } else {
-            $cates = AssetCategory::where('cate_name', 'like', '%'.$searchKey.'%')->paginate(20);
+            $cates = AssetCategory::where('cate_name', 'like', '%'.$searchKey.'%')->orderBy('cate_no')->paginate(20);
         }
 
         return [

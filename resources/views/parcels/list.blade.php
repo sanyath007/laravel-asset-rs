@@ -70,7 +70,7 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer">
-                            <a href="{{ url('/asset/add') }}" class="btn btn-primary">
+                            <a href="{{ url('/parcel/add') }}" class="btn btn-primary">
                                 เพิ่มพัสดุหลัก
                             </a>
                         </div>
@@ -113,10 +113,8 @@
                                     <td style="text-align: left;">@{{ parcel.deprec_type.deprec_type_name }}</td>
                                     <td style="text-align: center;">
                                         <span class="label label-info" ng-show="paid.parcel_status!=0">
-                                            @{{ (parcel.status==1) ? 'รอเบิก' : 
-                                                (parcel.status==2) ? 'ใช้งานอยู่' : 
-                                                (parcel.status==3) ? 'ถูกยืม' : 
-                                                (parcel.status==4) ? 'จำหน่าย' : 'รอตรวจสอบ' }}
+                                            @{{ (parcel.status==1) ? 'ใช้งานอยู่' : 
+                                                (parcel.status==2) ? 'ยกเลิก' : 'ไม่ทราบ' }}
                                         </span>
                                     </td>             
                                     <td style="text-align: center;">

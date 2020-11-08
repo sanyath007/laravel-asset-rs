@@ -71,6 +71,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('parcel/search/{parcelType}/{searchKey}', 'ParcelController@search');
     Route::get('parcel/get-ajax-all', 'ParcelController@getAjexAll');
     Route::get('parcel/get-ajax-byid/{parcelId}', 'ParcelController@getById');
+    Route::get('parcel/get-ajax-no/{assetType}', 'ParcelController@getNo');
     Route::get('parcel/add', 'ParcelController@add');
     Route::post('parcel/store', 'ParcelController@store');
     Route::get('parcel/edit/{parcelId}', 'ParcelController@edit');

@@ -13,10 +13,10 @@ app.controller('parcelCtrl', function(CONFIG, $scope, $http, toaster, ModalServi
         parcel_no: '',
         parcel_name: '',
         description: '',
+        parcel_type: '',
         asset_type: '',
         unit: '',
         unit_price: '',
-        supplier: '',
         deprec_type: '',
         first_y_month: '',
         remark: '',
@@ -25,16 +25,16 @@ app.controller('parcelCtrl', function(CONFIG, $scope, $http, toaster, ModalServi
 
     $scope.barOptions = {};
 
-    $scope.clearAssetObj = function() {
-        $scope.asset = {
+    $scope.clearParcelObj = function() {
+        $scope.parcel = {
             parcel_id: '',
             parcel_no: '',
             parcel_name: '',
             description: '',
+            parcel_type: '',
             asset_type: '',
             unit: '',
             unit_price: '',
-            supplier: '',
             deprec_type: '',
             first_y_month: '',
             remark: '',
@@ -49,7 +49,6 @@ app.controller('parcelCtrl', function(CONFIG, $scope, $http, toaster, ModalServi
         let parcelType = $scope.cboParcelType === '' ? 0 : $scope.cboParcelType; 
         let searchKey = $scope.searchKeyword === '' ? 0 : $scope.searchKeyword;
 
-        console.log(CONFIG.baseUrl+ '/parcel/search/' +parcelType+ '/' +searchKey);
         $http.get(CONFIG.baseUrl+ '/parcel/search/' +parcelType+ '/' +searchKey)
         .then(function(res) {      
             console.log(res);
@@ -64,6 +63,27 @@ app.controller('parcelCtrl', function(CONFIG, $scope, $http, toaster, ModalServi
         });
     }
 
+    $scope.getParcelWithURL = function(URL) {
+        console.log(URL);
+        $scope.parcels = [];
+        $scope.pager = [];
+
+        $scope.loading = true;
+
+        $http.get(URL)
+        .then(function(res) {
+            console.log(res);
+            $scope.parcel_types = res.data.parcel_types;
+            $scope.parcels = res.data.parcels.data;
+            $scope.pager = res.data.parcels;
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
     $scope.getAssetType = function (cateId) {
         $scope.loading = true;
 
@@ -71,6 +91,25 @@ app.controller('parcelCtrl', function(CONFIG, $scope, $http, toaster, ModalServi
         .then(function(res) {
             console.log(res);
             $scope.types = res.data.types;
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.getParcelNo = function (assetType) {
+        $scope.loading = true;
+
+        $http.get(CONFIG.baseUrl+ '/parcel/get-ajax-no/' +assetType)
+        .then(function(res) {
+            console.log(res);
+            let tmpNo = res.data.parcelNo;
+            let [group, type, no] = tmpNo.split('-');
+            let newNo = (parseInt(no)+1).toString().padStart(4, "0");
+            
+            $scope.parcel.parcel_no = group+ '-' +type+ '-' +newNo;
 
             $scope.loading = false;
         }, function(err) {
@@ -88,39 +127,15 @@ app.controller('parcelCtrl', function(CONFIG, $scope, $http, toaster, ModalServi
         });
     };
 
-    $scope.getDebtWithURL = function(URL) {
-        console.log(URL);
-        $scope.debts = [];
-        $scope.debtPager = [];
-        $scope.debtPages = [];
-
-        $scope.loading = true;
-
-        $http.get(URL)
-        .then(function(res) {
-            console.log(res);
-            $scope.debts = res.data.debts.data;
-            $scope.debtPager = res.data.debts;
-            $scope.debtPages = PaginateService.createPagerNo($scope.debtPager);
-
-            $scope.loading = false;
-        }, function(err) {
-            console.log(err);
-            $scope.loading = false;
-        });
-    };
-
     $scope.store = function(event, form) {
         event.preventDefault();
-        /** Convert thai date to db date. */
-        $scope.asset.date_in = StringFormatService.convToDbDate($scope.asset.date_in);
-        $scope.asset.doc_date = StringFormatService.convToDbDate($scope.asset.doc_date);
-        /** Get user id */
-        // $scope.asset.created_by = $("#user").val();
-        // $scope.asset.updated_by = $("#user").val();
-        console.log($scope.asset);
 
-        $http.post(CONFIG.baseUrl + '/asset/store', $scope.asset)
+        /** Get user id */
+        // $scope.parcel.created_by = $("#user").val();
+        // $scope.parcel.updated_by = $("#user").val();
+        console.log($scope.parcel);
+
+        $http.post(CONFIG.baseUrl + '/parcel/store', $scope.parcel)
         .then(function(res) {
             console.log(res);
             toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
@@ -131,7 +146,7 @@ app.controller('parcelCtrl', function(CONFIG, $scope, $http, toaster, ModalServi
 
         /** Clear control value and model data */
         document.getElementById(form).reset();
-        $scope.clearAssetObj();
+        $scope.clearParcelObj();
     };
 
     $scope.edit = function(assetId) {
@@ -139,22 +154,19 @@ app.controller('parcelCtrl', function(CONFIG, $scope, $http, toaster, ModalServi
 
         /** Show edit form modal dialog */
         // $('#dlgEditForm').modal('show');BASE_URL
-        window.location.href = CONFIG.baseUrl + '/asset/edit/' + assetId;
+        window.location.href = CONFIG.baseUrl + '/parcel/edit/' + assetId;
     };
 
     $scope.update = function(event, form) {
         event.preventDefault();
 
-        /** Convert thai date to db date. */
-        $scope.asset.date_in = StringFormatService.convToDbDate($scope.asset.date_in);
-        $scope.asset.doc_date = StringFormatService.convToDbDate($scope.asset.doc_date);
         /** Get user id */
-        // $scope.asset.created_by = $("#user").val();
-        // $scope.asset.updated_by = $("#user").val();
-        console.log($scope.asset);
+        // $scope.parcel.created_by = $("#user").val();
+        // $scope.parcel.updated_by = $("#user").val();
+        console.log($scope.parcel);
 
-        if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + assetId + " ใช่หรือไม่?")) {
-            $http.put(CONFIG.baseUrl + '/asset/update/', $scope.asset)
+        if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + $scope.parcel.parcel_id + " ใช่หรือไม่?")) {
+            $http.put(CONFIG.baseUrl + '/parcel/update/', $scope.parcel)
             .then(function(res) {
                 console.log(res);
             }, function(err) {
@@ -163,7 +175,9 @@ app.controller('parcelCtrl', function(CONFIG, $scope, $http, toaster, ModalServi
         }
 
         /** Redirect to debt list */
-        window.location.href = CONFIG.baseUrl + '/asset/list';
+        setTimeout(() => {
+            window.location.href = CONFIG.baseUrl + '/parcel/list';
+        }, 2000);
     };
 
     $scope.delete = function(assettId) {

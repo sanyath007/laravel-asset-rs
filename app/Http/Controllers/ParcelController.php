@@ -19,10 +19,9 @@ use App\Models\Department;
 class ParcelController extends Controller
 {   
     protected $status = [
-        '1' => 'รอเบิก',
-        '2' => 'ใช้งานอยู่',
-        '3' => 'ถูกยืม',
-        '4' => 'จำหน่าย',
+        '1' => 'ใช้งานอยู่',
+        '2' => 'ยกเลิก',
+        '3' => 'ไม่ทราบ'
     ];
     
     protected $parcelType = [
@@ -37,20 +36,12 @@ class ParcelController extends Controller
     public function formValidate (Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'asset_no' => 'required',
-            'asset_name' => 'required',
-            'asset_type' => 'required',
-            'amount' => 'required',
+            'parcel_no' => 'required',
+            'parcel_name' => 'required',
             'unit' => 'required',
             'unit_price' => 'required',
-            'purchased_method' => 'required',
-            'budget_type' => 'required',
-            'year' => 'required',
-            'supplier' => 'required',
-            'doc_type' => 'required',
-            'doc_no' => 'required',
-            'doc_date' => 'required',
-            'date_in' => 'required',
+            'deprec_type' => 'required',
+            'first_y_month' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -108,6 +99,31 @@ class ParcelController extends Controller
         ];
     }
 
+    public function getById($parcelId)
+    {
+        return [
+            'parcel' => Parcel::with('deprecType')->get()->find($parcelId),
+        ];
+    }
+    
+    public function getNo($assetType)
+    {
+        $parcel = Parcel::where('asset_type', '=', $assetType)
+                        ->orderBy('parcel_no', 'DESC')
+                        ->first();
+
+        if($parcel) {
+            $parcelNo = $parcel->parcel_no;
+        } else {
+            $assetType = AssetType::find($assetType);
+            $parcelNo = $assetType->type_no.'-0000';
+        }
+        
+        return [
+            'parcelNo' => $parcelNo
+        ];
+    }
+
     private function generateAutoId()
     {
         $debt = \DB::table('nrhosp_acc_debt')
@@ -125,45 +141,32 @@ class ParcelController extends Controller
     public function add()
     {
     	return view('parcels.add', [
-            "parcels"     => Parcel::all(),
-            "deprecTypes"     => DeprecType::all(),
-            "units"     => AssetUnit::all(),
-            "budgets"   => BudgetType::all(),
-            "docs"   => DocumentType::all(),
-            "methods"     => PurchasedMethod::all(),
-            "suppliers" => Supplier::all(),
-            "departs" => Department::all(),
-            "statuses"  => $this->status
+            "parcels"       => Parcel::all(),
+            "deprecTypes"   => DeprecType::all(),
+            "units"         => AssetUnit::all(),
+            "types"         => AssetType::orderBy('type_no')->get(),
+            "parcelTypes"   => $this->parcelType,
+            "statuses"      => $this->status
     	]);
     }
 
     public function store(Request $req)
     {
-        $asset = new Asset();
-        // $asset->asset_id = $this->generateAutoId();
-        $asset->asset_no = $req['asset_no'];
-        $asset->asset_name = $req['asset_name'];
-        $asset->description = $req['description'];
-        $asset->asset_type = $req['asset_type'];
-        $asset->amount = $req['amount'];
-        $asset->unit = $req['unit'];
-        $asset->unit_price = $req['unit_price'];
-        $asset->purchased_method = $req['purchased_method'];
-        $asset->reg_no = $req['reg_no'];
-        $asset->budget_type = $req['budget_type'];
-        $asset->year = $req['year'];
-        $asset->supplier = $req['supplier'];
-        $asset->doc_type = $req['doc_type'];
-        $asset->doc_no = $req['doc_no'];
-        $asset->doc_date = $req['doc_date'];
-        $asset->date_in = $req['date_in'];
-        $asset->remark = $req['remark'];
-        $asset->status = '1';
+        $parcel = new Parcel();
+        // $parcel->parcel_id = $this->generateAutoId();
+        $parcel->parcel_no = $req['parcel_no'];
+        $parcel->parcel_name = $req['parcel_name'];
+        $parcel->description = $req['description'];
+        $parcel->parcel_type = $req['parcel_type'];
+        $parcel->asset_type = $req['asset_type'];
+        $parcel->unit = $req['unit'];
+        $parcel->unit_price = $req['unit_price'];
+        $parcel->deprec_type = $req['deprec_type'];
+        $parcel->first_y_month = $req['first_y_month'];
+        $parcel->remark = $req['remark'];
+        $parcel->status = '1';
 
-        /** Upload image */
-        $asset->image = '';
-
-        if($asset->save()) {
+        if($parcel->save()) {
             return [
                 "status" => "success",
                 "message" => "Insert success.",
@@ -176,55 +179,35 @@ class ParcelController extends Controller
         }
     }
 
-    public function getById($parcelId)
-    {
-        return [
-            'parcel' => Parcel::with('deprecType')->get()->find($parcelId),
-        ];
-    }
-
     public function edit($assetId)
     {
         return view('parcels.edit', [
             "asset"         => Asset::find($assetId),
-            "parcels"     => Parcel::all(),
+            "parcels"       => Parcel::all(),
             "deprecTypes"   => DeprecType::all(),
             "units"         => AssetUnit::all(),
-            "budgets"       => BudgetType::all(),
-            "docs"          => DocumentType::all(),
-            "methods"       => PurchasedMethod::all(),
-            "suppliers"     => Supplier::all(),
-            "departs"       => Department::all(),
+            "types"         => AssetType::orderBy('type_no')->get(),     
+            "parcelTypes"   => $this->parcelType,
             "statuses"      => $this->status
         ]);
     }
 
     public function update(Request $req)
     {
-        $asset = Asset::find($req['asset_id']);
-        $asset->asset_no = $req['asset_no'];
-        $asset->asset_name = $req['asset_name'];
-        $asset->description = $req['description'];
-        $asset->asset_type = $req['asset_type'];
-        $asset->amount = $req['amount'];
-        $asset->unit = $req['unit'];
-        $asset->unit_price = $req['unit_price'];
-        $asset->purchased_method = $req['method'];
-        $asset->reg_no = $req['reg_no'];
-        $asset->budget_type = $req['budget_type'];
-        $asset->year = $req['year'];
-        $asset->supplier = $req['supplier'];
-        $asset->doc_type = $req['doc_type'];
-        $asset->doc_no = $req['doc_no'];
-        $asset->doc_date = $req['doc_date'];
-        $asset->date_in = $req['date_in'];
-        $asset->remark = $req['remark'];
-        $asset->status = $req['status'];
+        $parcel = Parcel::find($req['parcel_id']);
+        $parcel->parcel_no = $req['parcel_no'];
+        $parcel->parcel_name = $req['parcel_name'];
+        $parcel->description = $req['description'];
+        $parcel->parcel_type = $req['parcel_type'];
+        $parcel->asset_type = $req['asset_type'];
+        $parcel->unit = $req['unit'];
+        $parcel->unit_price = $req['unit_price'];
+        $parcel->deprec_type = $req['deprec_type'];
+        $parcel->first_y_month = $req['first_y_month'];
+        $parcel->remark = $req['remark'];
+        $parcel->status = '1';
 
-        /** Upload image */
-        $asset->image = '';
-
-        if($asset->save()) {
+        if($parcel->save()) {
             return [
                 "status" => "success",
                 "message" => "Insert success.",
